@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>แผงควบคุมแอดมิน — โหวตผีไทย</title>
+<link href="https://fonts.googleapis.com/css2?family=Charmonman:wght@700&family=Mitr:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0808;--panel:#181111;--border:#3a1f1f;--blood:#7d1414;--blood-bright:#c22a2a;--fog:#d8d0c8;--dim:#8a7f78}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg); color:var(--fog); font-family:'Mitr',sans-serif; min-height:100vh;
+  display:flex; align-items:center; justify-content:center; padding:20px}
+.box{max-width:420px; width:100%; background:linear-gradient(180deg,var(--panel),#0f0b0b);
+  border:1px solid var(--border); border-radius:16px; padding:32px 28px; box-shadow:0 30px 80px rgba(0,0,0,.5)}
+h1{font-family:'Charmonman',cursive; color:var(--blood-bright); font-size:30px; text-align:center; margin-bottom:20px}
+label{display:block; font-size:12.5px; color:var(--dim); margin:14px 0 6px}
+input{width:100%; background:#120d0d; border:1px solid var(--border); color:var(--fog);
+  padding:11px 12px; border-radius:8px; font-family:'Mitr'; font-size:14px}
+.btn{width:100%; margin-top:18px; padding:12px 0; border-radius:9px; border:none; cursor:pointer;
+  font-family:'Mitr'; font-size:15px; font-weight:600}
+.btn.primary{background:linear-gradient(180deg,var(--blood-bright),var(--blood)); color:#fff}
+.btn.toggle-open{background:linear-gradient(180deg,#3fbf6b,#227a45); color:#fff}
+.btn.toggle-close{background:linear-gradient(180deg,#8a3030,#5a1f1f); color:#fff}
+.status{margin-top:18px; font-size:14px; text-align:center; color:var(--dim)}
+.hide{display:none}
+.msg{margin-top:12px; font-size:12.5px; text-align:center; color:var(--dim)}
+.wide{max-width:640px}
+h2{font-family:'Charmonman',cursive; font-size:24px; color:var(--blood-bright); margin:28px 0 14px}
+.ghostRow{border:1px solid var(--border); border-radius:10px; padding:14px; margin-bottom:14px;
+  display:grid; grid-template-columns:70px 1fr; gap:12px}
+.thumb{width:70px; height:90px; border-radius:6px; background:#120d0d center/cover no-repeat;
+  display:flex; align-items:center; justify-content:center; font-size:26px; opacity:.7}
+.ghostRow h4{font-size:15px; margin-bottom:6px}
+.ghostRow input[type=file]{font-size:11.5px; color:var(--dim)}
+textarea{width:100%; background:#120d0d; border:1px solid var(--border); color:var(--fog);
+  padding:8px 10px; border-radius:8px; font-family:'Mitr'; font-size:12.5px; margin-top:6px; resize:vertical}
+.smallbtn{margin-top:8px; padding:7px 14px; font-size:12px; border-radius:7px; border:none;
+  background:linear-gradient(180deg,var(--blood-bright),var(--blood)); color:#fff; cursor:pointer}
+.smallbtn.delbtn{background:transparent; border:1px solid #6a2a2a; color:#c98; margin-left:8px}
+.smallbtn.delbtn:hover{border-color:var(--blood-bright); color:#fdd}
+
+/* ===== admin tabs & bar ===== */
+.adminbar{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:12px}
+.tabs{display:flex; gap:8px}
+.tab{background:transparent; border:1px solid var(--border); color:var(--dim); padding:9px 16px; border-radius:9px 9px 0 0; font-family:'Mitr'; font-size:14px; cursor:pointer}
+.tab.active{background:linear-gradient(180deg,var(--blood-bright),var(--blood)); color:#fff; border-color:transparent; font-weight:600}
+.adminbar-right{display:flex; gap:8px}
+.linkbtn{background:transparent; border:1px solid var(--border); color:var(--dim); padding:8px 14px; border-radius:20px; font-family:'Mitr'; font-size:13px; cursor:pointer}
+.linkbtn:hover{border-color:var(--blood-bright); color:var(--fog)}
+.linkbtn.logout{border-color:#6a2a2a; color:#c98}
+.schedbox{border:1px solid var(--border); border-radius:12px; padding:16px; background:#120d0d; margin:12px 0}
+.schedrow{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:12px}
+.schedrow>div{flex:1; min-width:180px}
+.togglerow{display:flex; gap:10px; margin:8px 0 4px}
+</style>
+</head>
+<body>
+
+<div class="box" id="loginBox">
+  <h1>สำหรับแอดมิน</h1>
+  <label>รหัสผ่านแอดมิน</label>
+  <input type="password" id="pw" placeholder="กรอกรหัสผ่าน">
+  <button class="btn primary" onclick="login()">เข้าสู่ระบบ</button>
+  <div class="msg" id="loginMsg"></div>
+</div>
+
+<div class="box wide hide" id="panelBox">
+  <div class="adminbar">
+    <div class="tabs">
+      <button class="tab active" id="tab1btn" onclick="showTab(1)">⚙ ตั้งค่าโหวต &amp; จัดการผี</button>
+      <button class="tab" id="tab2btn" onclick="showTab(2)">🏆 ดูผลโหวต</button>
+    </div>
+    <div class="adminbar-right">
+      <button class="linkbtn" onclick="window.open('index.html','_blank')">🏠 หน้าโหวต</button>
+      <button class="linkbtn logout" onclick="logout()">ออกจากระบบ ⎋</button>
+    </div>
+  </div>
+
+  <!-- ===== หน้า 1: ตั้งค่าโหวต + จัดการผี ===== -->
+  <div id="tab1">
+    <h1>แผงควบคุมการโหวต</h1>
+    <div class="status" id="curStatus">กำลังโหลดสถานะ…</div>
+
+    <div class="schedbox">
+      <div class="schedrow">
+        <div>
+          <label>วัน-เวลา<b>เริ่ม</b>เปิดโหวต</label>
+          <input type="datetime-local" id="startTime">
+        </div>
+        <div>
+          <label>วัน-เวลา<b>ปิด</b>โหวต</label>
+          <input type="datetime-local" id="endTime">
+        </div>
+      </div>
+      <button class="btn primary" onclick="saveSchedule()">บันทึกช่วงเวลาโหวต</button>
+      <div class="msg" style="margin-top:8px">* ตั้งช่วงวันเปิด–ปิด แล้วต้องกด "เปิดรับโหวต" ด้วย ระบบจะเปิดให้โหวตเฉพาะภายในช่วงเวลานี้</div>
+    </div>
+
+    <div class="togglerow">
+      <button class="btn toggle-open" id="openBtn" onclick="setStatus(true)">เปิดรับโหวต</button>
+      <button class="btn toggle-close" id="closeBtn" onclick="setStatus(false)">ปิดรับโหวต</button>
+    </div>
+
+    <h2>รูปภาพและตำนานผีแต่ละตัว</h2>
+    <div id="ghostAdminList">กำลังโหลด…</div>
+  </div>
+
+  <!-- ===== หน้า 2: ดูผลโหวต ===== -->
+  <div id="tab2" style="display:none">
+    <h1>ผลโหวตตอนนี้ (เฉพาะแอดมิน)</h1>
+    <div class="msg" style="margin-bottom:14px">หมายเหตุ: หน้านี้เห็นเฉพาะแอดมิน — ระบบไม่แสดงคะแนนบนหน้าเว็บพนักงาน เพื่อใช้สุ่มผู้โชคดีจากผีอันดับ 1</div>
+    <div id="resultBox" style="border:1px solid var(--border); border-radius:12px; padding:22px; background:#120d0d">
+      <div id="resultTop" style="font-size:20px; color:var(--fog)">กำลังโหลด…</div>
+      <div id="resultTotal" style="font-size:13px; color:var(--dim); margin-top:8px"></div>
+      <button class="btn primary" style="margin-top:16px; width:auto; padding:9px 20px" onclick="loadResults()">🔄 รีเฟรชผลโหวต</button>
+      <div id="resultAll" style="margin-top:18px; font-size:13.5px; color:var(--fog)"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbxx1ls-K26TDs6-Jk3isWIuz2euBsbampQxMheb_8vwB0HGYh3VN5vQgX8YkrHvIPj-/exec";
+
+function driveImg(url){
+  if(!url) return "";
+  var m = url.match(/[-\w]{25,}/);
+  if(m) return "https://drive.google.com/thumbnail?id=" + m[0] + "&sz=w1000";
+  return url;
+}
+// ===== ตัวช่วยเรียก backend แบบมี timeout กันหน้าค้าง =====
+async function apiFetch(url, options, tries){
+  options = options || {};
+  tries = (tries === undefined) ? 2 : tries;   // ช้า/ล้ม -> ลองใหม่อัตโนมัติ 1 ครั้ง
+  const ctrl = new AbortController();
+  const t = setTimeout(()=>ctrl.abort(), 12000); // 12 วินาทีต่อครั้ง
+  try{
+    const res = await fetch(url, Object.assign({}, options, {
+      signal: ctrl.signal,
+      redirect: "follow"
+    }));
+    return res;
+  } catch(e){
+    if(tries > 1){ await new Promise(r=>setTimeout(r,800)); return apiFetch(url, options, tries-1); }
+    throw e;
+  } finally { clearTimeout(t); }
+}
+
+let adminPassword = "";
+
+async function login(){
+  const pw = document.getElementById("pw").value;
+  const msg = document.getElementById("loginMsg");
+  msg.textContent = "กำลังตรวจสอบ…";
+  try{
+    const res = await apiFetch(API_URL, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body: JSON.stringify({action:"adminLogin", password: pw})});
+    const data = await res.json();
+    if(data.ok){
+      adminPassword = pw;
+      document.getElementById("loginBox").classList.add("hide");
+      document.getElementById("panelBox").classList.remove("hide");
+      loadStatus();
+      loadGhostsAdmin();
+      loadResults();
+    } else {
+      msg.textContent = "รหัสผ่านไม่ถูกต้อง";
+    }
+  }catch(e){ msg.textContent = "เชื่อมต่อไม่สำเร็จ"; }
+}
+
+function toLocalInput(iso){
+  // แปลง ISO -> ค่าใส่ใน datetime-local (เวลาท้องถิ่น)
+  const d = new Date(iso);
+  const off = d.getTimezoneOffset()*60000;
+  return new Date(d - off).toISOString().slice(0,16);
+}
+async function loadStatus(){
+  let data;
+  try{
+    const res = await apiFetch(API_URL + "?action=status&t=" + Date.now());
+    data = await res.json();
+  }catch(e){
+    document.getElementById("curStatus").innerHTML = 'โหลดสถานะไม่สำเร็จ <button class="smallbtn" onclick="loadStatus()">ลองใหม่</button>';
+    return;
+  }
+  const st = document.getElementById("curStatus");
+  let txt = data.open ? "🟢 สถานะ: เปิดรับโหวต" : "🔴 สถานะ: ปิดรับโหวต";
+  if(data.startTime) txt += "  |  เริ่ม: " + new Date(data.startTime).toLocaleString("th-TH");
+  if(data.endTime) txt += "  |  ปิด: " + new Date(data.endTime).toLocaleString("th-TH");
+  st.textContent = txt;
+  if(data.startTime) document.getElementById("startTime").value = toLocalInput(data.startTime);
+  if(data.endTime) document.getElementById("endTime").value = toLocalInput(data.endTime);
+}
+
+async function setStatus(open){
+  await apiFetch(API_URL, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body: JSON.stringify({action:"setStatus", password: adminPassword, open})});
+  loadStatus();
+}
+async function saveSchedule(){
+  const s = document.getElementById("startTime").value;
+  const en = document.getElementById("endTime").value;
+  const body = {action:"setSchedule", password: adminPassword};
+  body.startTime = s ? new Date(s).toISOString() : "";
+  body.endTime = en ? new Date(en).toISOString() : "";
+  await apiFetch(API_URL, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body: JSON.stringify(body)});
+  alert("บันทึกช่วงเวลาโหวตแล้ว");
+  loadStatus();
+}
+function showTab(n){
+  document.getElementById("tab1").style.display = n===1 ? "block" : "none";
+  document.getElementById("tab2").style.display = n===2 ? "block" : "none";
+  document.getElementById("tab1btn").classList.toggle("active", n===1);
+  document.getElementById("tab2btn").classList.toggle("active", n===2);
+  if(n===2) loadResults();
+}
+function logout(){
+  adminPassword = "";
+  document.getElementById("panelBox").classList.add("hide");
+  document.getElementById("loginBox").classList.remove("hide");
+  document.getElementById("pw").value = "";
+  document.getElementById("loginMsg").textContent = "";
+}
+
+let ghostsCache = [];
+async function loadResults(){
+  const top = document.getElementById("resultTop");
+  const total = document.getElementById("resultTotal");
+  const all = document.getElementById("resultAll");
+  top.textContent = "กำลังโหลด…"; total.textContent=""; all.innerHTML="";
+  try{
+    const res = await apiFetch(API_URL, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body: JSON.stringify({action:"getResults", password:adminPassword})});
+    const data = await res.json();
+    if(!data.ok){ top.textContent = "โหลดผลไม่สำเร็จ"; return; }
+    if(!data.ranking || data.ranking.length===0){ top.textContent = "ยังไม่มีคนโหวต"; return; }
+    const first = data.ranking[0];
+    top.innerHTML = "🏆 อันดับ 1 ตอนนี้: <b style=\"color:#c22a2a\">" + first.name + "</b> — <b>" + first.count + "</b> โหวต";
+    total.textContent = "ผู้โหวตทั้งหมด (ไม่ซ้ำคน): " + data.totalVoters + " คน";
+    all.innerHTML = "<div style=\"color:#8a7f78;margin-bottom:4px\">อันดับทั้งหมด:</div>" +
+      data.ranking.map((r,i)=> (i+1)+". "+r.name+" — "+r.count+" โหวต").join("<br>");
+  }catch(e){ top.textContent = "เชื่อมต่อไม่สำเร็จ"; }
+}
+async function loadGhostsAdmin(){
+  const box = document.getElementById("ghostAdminList");
+  box.innerHTML = "กำลังโหลด…";
+  let data;
+  try{
+    const res = await apiFetch(API_URL + "?action=ghosts&t=" + Date.now());
+    data = await res.json();
+  }catch(e){
+    box.innerHTML = '<div style="color:#c98">โหลดรายการผีไม่สำเร็จ <button class="smallbtn" onclick="loadGhostsAdmin()">ลองใหม่</button></div>';
+    return;
+  }
+  if(!data || !data.ok || !data.ghosts){
+    box.innerHTML = '<div style="color:#c98">ไม่พบข้อมูลผี (ตรวจว่า Deploy backend เวอร์ชันล่าสุดแล้ว) <button class="smallbtn" onclick="loadGhostsAdmin()">ลองใหม่</button></div>';
+    return;
+  }
+  ghostsCache = data.ghosts || [];
+  box.innerHTML = ghostsCache.map(gh => `
+    <div class="ghostRow">
+      <div class="thumb" id="thumb-${gh.ghostId}">${gh.imageUrl?`<img src="${driveImg(gh.imageUrl).replace('sz=w1000','sz=w240')}" loading="lazy" referrerpolicy="no-referrer" style="width:100%;height:100%;object-fit:cover;border-radius:6px" alt="">`:"👻"}</div>
+      <div>
+        <input id="name-${gh.ghostId}" value="${(gh.name||'').replace(/"/g,'&quot;')}" placeholder="ชื่อผี" style="font-weight:600; margin-bottom:6px">
+        <input type="file" accept="image/*" id="file-${gh.ghostId}">
+        <textarea id="sub-${gh.ghostId}" rows="1" placeholder="คำโปรยสั้นๆ">${gh.sub||""}</textarea>
+        <textarea id="legend-${gh.ghostId}" rows="3" placeholder="ตำนาน">${gh.legend||""}</textarea>
+        <button class="smallbtn" onclick="saveGhost('${gh.ghostId}')">บันทึกผีตัวนี้</button>
+        <button class="smallbtn delbtn" onclick="deleteGhost('${gh.ghostId}','${(gh.name||'').replace(/'/g,'')}')">ลบผีตัวนี้</button>
+      </div>
+    </div>`).join("") + `
+    <div class="ghostRow" style="grid-template-columns:1fr">
+      <div>
+        <h4>➕ เพิ่มผีใหม่</h4>
+        <input id="newName" placeholder="ชื่อผี (จำเป็น)" style="font-weight:600; margin-bottom:6px">
+        <textarea id="newSub" rows="1" placeholder="คำโปรยสั้นๆ"></textarea>
+        <textarea id="newLegend" rows="3" placeholder="ตำนาน"></textarea>
+        <button class="smallbtn" onclick="addGhost()">เพิ่มผี</button>
+        <div style="font-size:11px;color:var(--dim);margin-top:6px">* เพิ่มแล้วค่อยอัปโหลดรูปในแถวผีตัวนั้นได้</div>
+      </div>
+    </div>`;
+}
+
+function fileToBase64(file){
+  return new Promise((resolve,reject)=>{
+    const r = new FileReader();
+    r.onload = ()=>resolve(r.result.split(",")[1]);
+    r.onerror = reject;
+    r.readAsDataURL(file);
+  });
+}
+
+async function saveGhost(ghostId){
+  const fileInput = document.getElementById("file-"+ghostId);
+  const name = document.getElementById("name-"+ghostId).value.trim();
+  const sub = document.getElementById("sub-"+ghostId).value;
+  const legend = document.getElementById("legend-"+ghostId).value;
+  if(fileInput.files[0]){
+    const b64 = await fileToBase64(fileInput.files[0]);
+    await apiFetch(API_URL, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body: JSON.stringify({
+      action:"uploadGhostImage", password: adminPassword, ghostId,
+      imageBase64: b64, mimeType: fileInput.files[0].type
+    })});
+  }
+  await apiFetch(API_URL, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body: JSON.stringify({
+    action:"updateGhostText", password: adminPassword, ghostId, name, sub, legend
+  })});
+  loadGhostsAdmin();
+}
+
+async function addGhost(){
+  const name = document.getElementById("newName").value.trim();
+  const sub = document.getElementById("newSub").value.trim();
+  const legend = document.getElementById("newLegend").value.trim();
+  if(!name){ alert("กรุณากรอกชื่อผี"); return; }
+  await apiFetch(API_URL, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body: JSON.stringify({
+    action:"addGhost", password: adminPassword, name, sub, legend
+  })});
+  loadGhostsAdmin();
+}
+
+async function deleteGhost(ghostId, name){
+  if(!confirm("ยืนยันลบผี \"" + name + "\" ?\nการลบจะไม่สามารถกู้คืนได้")) return;
+  await apiFetch(API_URL, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body: JSON.stringify({
+    action:"deleteGhost", password: adminPassword, ghostId
+  })});
+  loadGhostsAdmin();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>โหวตผีไทย ที่คุณหลอนมากที่สุด</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👻</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Charmonman:wght@700&family=Charm:wght@700&family=Mitr:wght@300;400;500;600;700&family=Poppins:wght@200;300;400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{
+  --bg:#0a0808; --bg2:#120d0d; --panel:#181111; --border:#3a1f1f;
+  --blood:#7d1414; --blood-bright:#c22a2a; --ember:#ff5b3d;
+  --fog:#d8d0c8; --dim:#8a7f78; --gold:#b99b6b;
+}
+*{box-sizing:border-box; margin:0; padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:
+    linear-gradient(180deg, rgba(10,8,8,.58), rgba(10,8,8,.82)),
+    url('assets/bg-forest.jpg') center top/cover no-repeat,
+    var(--bg);
+  color:var(--fog); font-family:'Mitr',sans-serif; font-weight:300; line-height:1.7;
+  min-height:100vh; overflow-x:hidden;
+}
+.wrap{max-width:1180px; margin:0 auto; padding:0 24px}
+a{color:inherit}
+
+/* ===== drifting fog layers (site-wide) ===== */
+.fog-layer{position:fixed; top:-30%; left:-60%; width:220%; height:160%; pointer-events:none; z-index:1; opacity:.28;
+  background:
+    radial-gradient(ellipse 22% 16% at 18% 30%, rgba(200,192,182,.16), transparent 60%),
+    radial-gradient(ellipse 28% 18% at 42% 50%, rgba(185,177,167,.14), transparent 62%),
+    radial-gradient(ellipse 24% 16% at 68% 38%, rgba(195,187,177,.13), transparent 60%),
+    radial-gradient(ellipse 30% 20% at 88% 60%, rgba(180,172,162,.12), transparent 62%);
+  filter:blur(22px);
+  animation:cloudDrift 55s linear infinite;}
+.fog-layer.two{top:-25%; left:-60%; width:220%; height:160%; opacity:.2; filter:blur(30px);
+  background:
+    radial-gradient(ellipse 30% 20% at 30% 55%, rgba(190,182,172,.13), transparent 62%),
+    radial-gradient(ellipse 26% 18% at 60% 35%, rgba(175,167,157,.12), transparent 60%),
+    radial-gradient(ellipse 32% 22% at 82% 62%, rgba(185,177,167,.11), transparent 62%);
+  animation:cloudDrift2 78s linear infinite;}
+.fog-layer.three{position:fixed; top:-20%; left:-60%; width:220%; height:160%; pointer-events:none; z-index:1; opacity:.14; filter:blur(40px);
+  background:
+    radial-gradient(ellipse 40% 26% at 45% 45%, rgba(195,187,177,.10), transparent 65%),
+    radial-gradient(ellipse 34% 24% at 75% 30%, rgba(170,162,152,.09), transparent 62%);
+  animation:cloudDrift3 100s linear infinite;}
+@keyframes cloudDrift{0%{transform:translate3d(0,0,0)}100%{transform:translate3d(28%,-2%,0)}}
+@keyframes cloudDrift2{0%{transform:translate3d(0,0,0)}100%{transform:translate3d(-26%,2%,0)}}
+@keyframes cloudDrift3{0%{transform:translate3d(-8%,0,0)}50%{transform:translate3d(20%,-1%,0)}100%{transform:translate3d(-8%,0,0)}}
+
+/* floating embers */
+.embers{position:fixed; inset:0; pointer-events:none; z-index:1; overflow:hidden}
+/* ===== ควันธูปลอยขึ้นเป็นช่วงๆ ===== */
+.smoke-field{position:fixed; inset:0; pointer-events:none; z-index:1; overflow:hidden}
+.smoke{position:absolute; bottom:-30px; width:26px; height:26px; border-radius:50%;
+  background:radial-gradient(circle at 50% 50%, rgba(215,210,203,.30), rgba(195,190,183,.12) 45%, transparent 72%);
+  filter:blur(5px); opacity:0; transform-origin:center bottom;
+  animation:incense var(--dur,9s) ease-in-out infinite; animation-delay:var(--delay,0s)}
+@keyframes incense{
+  0%{opacity:0; transform:translateY(0) translateX(0) scale(.5)}
+  12%{opacity:.7}
+  45%{opacity:.55; transform:translateY(-38vh) translateX(24px) scale(1.15)}
+  70%{opacity:.35; transform:translateY(-62vh) translateX(-18px) scale(1.5)}
+  100%{opacity:0; transform:translateY(-88vh) translateX(20px) scale(2)}}
+.ember{position:absolute; bottom:-10px; width:3px; height:3px; border-radius:50%;
+  background:var(--ember); box-shadow:0 0 6px 1px rgba(255,91,61,.7);
+  opacity:0; animation:rise linear infinite}
+@keyframes rise{
+  0%{transform:translateY(0) translateX(0); opacity:0}
+  10%{opacity:.8} 90%{opacity:.5}
+  100%{transform:translateY(-100vh) translateX(30px); opacity:0}}
+
+nav,.hero,.section,footer,.overlay{position:relative; z-index:2}
+
+/* nav */
+nav{position:sticky; top:0; z-index:40; backdrop-filter:blur(10px);
+  background:rgba(8,6,6,.75); border-bottom:1px solid var(--border)}
+nav .wrap{display:flex; align-items:center; justify-content:space-between; height:76px}
+.logo{font-family:'Poppins',sans-serif; font-weight:300; font-size:30px; letter-spacing:.04em; color:#f6f2ec;
+  text-shadow:0 0 12px rgba(255,255,255,.25); animation:logoFlicker 6s infinite}
+.logo small{font-family:'Mitr',sans-serif; letter-spacing:0; font-weight:300}
+@keyframes logoFlicker{0%,97%,100%{opacity:1}98%{opacity:.45}99%{opacity:.85}}
+.logo small{display:block; font-family:'Mitr'; font-size:11px; color:var(--dim); font-weight:300}
+.navlinks{display:flex; gap:28px; font-size:14px; color:var(--dim)}
+.navlinks a:hover{color:var(--fog)}
+.adminbtn{border:1px solid var(--border); background:transparent; color:var(--dim);
+  padding:8px 16px; border-radius:20px; font-family:'Mitr'; font-size:13px; cursor:pointer}
+.adminbtn:hover{border-color:var(--blood-bright); color:var(--fog)}
+@media (max-width:760px){.navlinks{display:none}}
+
+/* hero */
+.hero{padding:88px 0 48px; text-align:center; background:transparent}
+.hero::before{content:""; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(circle at 50% 20%, rgba(194,42,42,.16), transparent 55%)}
+.hero h1{font-family:'Charmonman',cursive; font-size:clamp(34px,5.5vw,58px); color:#efe6df;
+  text-shadow:0 0 18px rgba(194,42,42,.55), 0 0 40px rgba(125,20,20,.35); line-height:1.15;
+  animation:titleFlicker 5s infinite}
+@keyframes titleFlicker{
+  0%,19%,21%,55%,57%,100%{opacity:1; text-shadow:0 0 18px rgba(194,42,42,.55),0 0 40px rgba(125,20,20,.35)}
+  20%{opacity:.6; text-shadow:0 0 6px rgba(194,42,42,.3)}
+  56%{opacity:.75}}
+.hero p.lead{color:var(--dim); max-width:520px; margin:16px auto 0; font-size:15px}
+.hero .rule{margin:26px auto 0; font-size:13px; color:var(--gold)}
+
+.statuscard{margin:32px auto 0; max-width:420px; border:1px solid var(--border);
+  background:linear-gradient(180deg, var(--panel), var(--bg2)); border-radius:14px; padding:22px 26px;
+  box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.statuscard .tag{font-size:13px; color:var(--dim); letter-spacing:.02em}
+.statuscard .dot{display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px}
+.dot.open{background:#3fbf6b; box-shadow:0 0 8px #3fbf6b; animation:pulse 1.6s infinite}
+.dot.closed{background:#8a3030}
+@keyframes pulse{0%,100%{box-shadow:0 0 8px #3fbf6b}50%{box-shadow:0 0 16px 3px #3fbf6b}}
+.statusline{font-size:18px; margin:6px 0 14px; font-weight:500}
+.statusline.open{color:#5fd98a}
+.statusline.closed{color:#c26a6a}
+.countdown{display:flex; justify-content:center; gap:14px; font-family:'Mitr'; margin-bottom:16px}
+.countdown div{text-align:center}
+.countdown b{font-size:26px; display:block; color:var(--fog)}
+.countdown span{font-size:11px; color:var(--dim)}
+.cta{display:inline-block; margin-top:4px; width:100%; text-align:center; padding:13px 0;
+  background:linear-gradient(180deg, var(--blood-bright), var(--blood)); color:#fff; border:none;
+  border-radius:10px; font-family:'Mitr'; font-size:16px; font-weight:600; cursor:pointer;
+  box-shadow:0 8px 24px rgba(125,20,20,.45); transition:transform .15s}
+.cta:hover{transform:translateY(-2px)}
+.cta:disabled{background:#3a2f2f; box-shadow:none; cursor:not-allowed; color:var(--dim)}
+.finenote{font-size:11.5px; color:var(--dim); margin-top:10px}
+
+/* ghost grid */
+.section{padding:46px 0}
+.section h2{font-family:'Charmonman',cursive; font-size:30px; text-align:center; color:#efe6df;
+  text-shadow:0 0 14px rgba(194,42,42,.4); margin-bottom:34px}
+.grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px}
+@media (max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.grid{grid-template-columns:1fr}}
+.card{position:relative; aspect-ratio:3/4; border-radius:14px; overflow:hidden; cursor:pointer;
+  border:1px solid var(--border); background:#0d0909 center/cover no-repeat;
+  transition:transform .3s, border-color .2s, box-shadow .2s;
+  animation:floaty 6s ease-in-out infinite}
+.card:nth-child(2n){animation-duration:7.2s; animation-delay:-1.5s}
+.card:nth-child(3n){animation-duration:8s; animation-delay:-3s}
+.card:nth-child(4n){animation-duration:6.6s; animation-delay:-2.2s}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.card{box-shadow:0 10px 26px rgba(0,0,0,.55)}
+.card:hover{transform:translateY(-8px) scale(1.03); border-color:var(--blood-bright);
+  box-shadow:0 22px 55px rgba(125,20,20,.5), 0 0 22px rgba(194,42,42,.35); animation-play-state:paused}
+.card::after{content:""; position:absolute; inset:0; pointer-events:none; opacity:0;
+  background:radial-gradient(circle at 50% 40%, rgba(194,42,42,.22), transparent 60%);
+  transition:opacity .3s}
+.card:hover::after{opacity:1}
+.card .cardimg{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0}
+.card .num{position:absolute; top:12px; left:14px; font-family:'Mitr'; font-weight:700;
+  font-size:14px; color:var(--blood-bright); text-shadow:0 0 8px rgba(0,0,0,.85); z-index:2}
+.card .noimg{position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  font-size:42px; opacity:.45}
+.card .overlay-grad{position:absolute; inset:0;
+  background:linear-gradient(180deg, transparent 32%, rgba(5,3,3,.55) 65%, rgba(5,3,3,.95) 100%)}
+.card .info{position:absolute; left:0; right:0; bottom:0; padding:16px 14px; z-index:2; text-align:left}
+.card h3{font-family:'Mitr'; font-size:17px; font-weight:700; color:#f2ece6}
+.card p{font-size:11.5px; color:var(--dim); margin-top:4px; line-height:1.5}
+.card .viewbtn{display:inline-block; margin-top:10px; font-size:11.5px; color:var(--fog);
+  border:1px solid rgba(255,255,255,.28); padding:5px 12px; border-radius:20px}
+.card .selectedTag{display:block; margin-top:8px; font-size:11px; color:#5fd98a; visibility:hidden; height:0}
+.card.picked .selectedTag{visibility:visible; height:auto}
+.card.picked{border-color:#3fbf6b; box-shadow:0 0 24px rgba(63,191,107,.35)}
+
+/* modal */
+.overlay{position:fixed; inset:0; background:rgba(4,3,3,.78); backdrop-filter:blur(3px);
+  display:none; align-items:center; justify-content:center; z-index:100; padding:20px}
+.overlay.show{display:flex; animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{background:linear-gradient(180deg,#1a1212,#0c0909); border:1px solid var(--border);
+  border-radius:16px; max-width:480px; width:100%; padding:30px 28px; position:relative;
+  max-height:88vh; overflow-y:auto; box-shadow:0 30px 80px rgba(0,0,0,.6);
+  animation:riseIn .32s cubic-bezier(.2,.8,.3,1)}
+@keyframes riseIn{from{opacity:0; transform:translateY(24px) scale(.97)}to{opacity:1; transform:none}}
+.modal .close{position:absolute; top:14px; right:18px; background:none; border:none; color:var(--dim);
+  font-size:22px; cursor:pointer}
+.modal h3{font-family:'Charmonman',cursive; font-size:30px; color:#f6f1ea; margin-bottom:4px; text-shadow:0 0 10px rgba(255,255,255,.55), 0 0 22px rgba(255,255,255,.28)}
+.modal .sub{font-size:12.5px; color:var(--gold); margin-bottom:14px}
+.modal .modalimg{width:100%; aspect-ratio:3/4; max-height:50vh; border-radius:12px; margin-bottom:16px;
+  background:#0d0909 center/contain no-repeat; border:1px solid var(--border)}
+.modal .legend{font-size:14px; color:var(--fog); line-height:1.8; margin-bottom:20px}
+.btnrow{display:flex; gap:10px}
+.btn{flex:1; padding:11px 0; border-radius:9px; font-family:'Mitr'; font-size:14px; cursor:pointer; border:1px solid var(--border)}
+.btn.primary{background:linear-gradient(180deg,var(--blood-bright),var(--blood)); color:#fff; border:none; font-weight:600}
+.btn.ghostbtn{background:transparent; color:var(--dim)}
+.btn:disabled{opacity:.6; cursor:wait}
+
+label{display:block; font-size:12.5px; color:var(--dim); margin:14px 0 6px}
+select,input{width:100%; background:#120d0d; border:1px solid var(--border); color:var(--fog);
+  padding:11px 12px; border-radius:8px; font-family:'Mitr'; font-size:14px}
+select:focus,input:focus{outline:none; border-color:var(--blood-bright)}
+.pickedGhost{background:#150f0f; border:1px dashed var(--border); border-radius:10px; padding:12px 14px;
+  font-size:14px; margin-bottom:6px}
+
+.toast{position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(20px); opacity:0;
+  background:#1a1212; border:1px solid var(--blood-bright); color:var(--fog); padding:14px 22px;
+  border-radius:10px; font-size:14px; z-index:200; transition:all .3s; box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+
+footer{border-top:1px solid var(--border); padding:40px 0; text-align:center; color:var(--dim); font-size:12.5px}
+footer .fname{font-family:'Charmonman',cursive; font-size:22px; color:var(--blood-bright); margin-bottom:8px}
+
+/* ===== เงา/แสงเรือง ให้ดูลอยมีมิติ ===== */
+.statuscard{box-shadow:0 24px 70px rgba(0,0,0,.6), 0 0 30px rgba(125,20,20,.18)}
+.cta{box-shadow:0 10px 30px rgba(125,20,20,.55), 0 0 18px rgba(194,42,42,.35)}
+.logo, nav{position:relative; z-index:41}
+.soundbtn{margin-right:10px}
+
+/* ===== Intro splash: วิดีโอแบ็คกราวด์ + ฟอนต์ซ้อน ===== */
+#introScreen{position:fixed; inset:0; z-index:9999; background:#000; overflow:hidden;
+  display:flex; align-items:center; justify-content:center; transition:opacity 1s ease;}
+#introScreen.hide{opacity:0; pointer-events:none;}
+#introScreen .intro-video{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;}
+#introScreen .intro-dark{position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(180deg, rgba(6,4,4,.55), rgba(6,4,4,.68));}
+#introScreen .intro-vignette{position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(ellipse 75% 75% at 50% 45%, transparent 42%, rgba(0,0,0,.75) 96%);}
+#introScreen .intro-title{position:relative; z-index:3; text-align:center;
+  font-family:'Charmonman',cursive; color:#f3e9e2; font-size:clamp(34px,7vw,68px); line-height:1.15;
+  text-shadow:0 0 22px rgba(220,40,40,.75), 0 0 52px rgba(150,20,20,.55), 0 2px 6px rgba(0,0,0,.8);
+  opacity:0; animation:introTitle 3.4s ease-out .4s both;}
+@keyframes introTitle{0%{opacity:0; letter-spacing:.28em; transform:translateY(-8px)} 40%{opacity:1; letter-spacing:.03em; transform:translateY(0)} 100%{opacity:1}}
+#introScreen .skipbtn{position:absolute; bottom:30px; right:30px; z-index:4;
+  background:linear-gradient(180deg,rgba(194,42,42,.92),rgba(125,20,20,.92)); border:1px solid rgba(255,255,255,.25);
+  color:#fff; padding:12px 26px; border-radius:26px; font-family:'Mitr'; font-size:16px; font-weight:600;
+  cursor:pointer; box-shadow:0 6px 22px rgba(125,20,20,.5); backdrop-filter:blur(4px);}
+#introScreen .skipbtn:hover{transform:translateY(-2px); box-shadow:0 10px 30px rgba(194,42,42,.6);}
+#introScreen .skipbtn::after{content:" ›"; font-size:18px;}
+body.intro-lock{overflow:hidden;}
+
+/* ===== การ์ดกิจกรรมหลังโหวต (พรีเมียม) =====
+   ขนาดตัวอักษรทั้งหมดใช้หน่วย em ผูกกับความกว้างการ์ด (JS ตั้ง font-size = กว้าง/30)
+   ทำให้การ์ดหน้าจอกับรูปที่ดาวน์โหลด (1080x1350) หน้าตาเหมือนกันทุกพิกเซล */
+.votecard{position:relative; width:100%; aspect-ratio:4/5; border-radius:.6em; overflow:hidden;
+  background:#0a0606; font-size:12px;
+  box-shadow:0 12px 40px rgba(0,0,0,.6)}
+.votecard .vc-img{position:absolute; inset:0;
+  background-size:cover; background-position:center 15%; background-repeat:no-repeat}
+.votecard .vc-overlay{position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(5,3,3,.25) 0%, rgba(5,3,3,0) 16%, rgba(5,3,3,0) 58%, rgba(5,3,3,.45) 80%, rgba(5,3,3,.7) 100%)}
+.votecard .vc-cloth{position:absolute; top:0; width:2.6em; height:8em; z-index:2; pointer-events:none}
+.votecard .vc-cloth.l{left:0; background:linear-gradient(100deg, rgba(125,12,12,.5), rgba(125,12,12,.22) 40%, transparent 72%)}
+.votecard .vc-cloth.r{right:0; background:linear-gradient(260deg, rgba(125,12,12,.5), rgba(125,12,12,.22) 40%, transparent 72%)}
+.votecard .vc-frame{position:absolute; inset:.5em; border:.09em solid #b99b6b; border-radius:.4em; z-index:3; pointer-events:none;
+  box-shadow:inset 0 0 .9em rgba(0,0,0,.55)}
+.votecard .vc-frame2{position:absolute; inset:.95em; border:.045em solid rgba(185,155,107,.55); border-radius:.3em; z-index:3; pointer-events:none}
+.votecard .vc-corner{position:absolute; width:2.7em; height:2.7em; z-index:4; pointer-events:none}
+.votecard .vc-corner svg{width:100%; height:100%; display:block}
+.votecard .vc-corner.tl{top:.3em; left:.3em}
+.votecard .vc-corner.tr{top:.3em; right:.3em; transform:scaleX(-1)}
+.votecard .vc-corner.bl{bottom:.3em; left:.3em; transform:scaleY(-1)}
+.votecard .vc-corner.br{bottom:.3em; right:.3em; transform:scale(-1,-1)}
+
+.votecard .vc-headplate{position:absolute; top:1.6em; left:50%; transform:translateX(-50%); width:auto; max-width:80%; z-index:5;
+  white-space:nowrap; text-align:center; padding:.12em 1.1em .22em; border:.06em solid #b99b6b; border-radius:2em;
+  background:linear-gradient(180deg, rgba(22,12,12,.45), rgba(8,5,5,.55));}
+.votecard .vc-skull{position:absolute; top:-1em; left:50%; transform:translateX(-50%); font-size:1.25em; line-height:1}
+.votecard .vc-head{font-family:'Charm',cursive; font-weight:700; font-size:1.35em; line-height:1.25; color:#ecd09a;
+  letter-spacing:.02em; text-shadow:0 .05em .12em rgba(0,0,0,.95), 0 0 .35em rgba(194,42,42,.55)}
+
+.votecard .vc-plate{position:absolute; left:50%; bottom:1.7em; transform:translateX(-50%); width:62%; z-index:5;
+  text-align:center; padding:.6em .8em .55em; border:.07em solid #b99b6b; border-radius:.9em;
+  background:radial-gradient(ellipse at 50% 50%, rgba(0,0,0,.38) 55%, rgba(0,0,0,.55) 100%);}
+.votecard .vc-person{font-family:'Mitr',sans-serif; font-weight:400; font-size:.95em; color:#ecd6a6; line-height:1.4;
+  text-shadow:0 .06em .2em rgba(0,0,0,.8)}
+.votecard .vc-orn{display:flex; align-items:center; justify-content:center; gap:.4em; margin:.15em 0 .1em; color:#b99b6b; font-size:.7em; line-height:1.2}
+.votecard .vc-orn i{flex:1; height:.07em; background:linear-gradient(90deg, transparent, #b99b6b, transparent)}
+.votecard .vc-mid{font-family:'Mitr',sans-serif; font-size:.95em; color:#f2ece6; line-height:1.2; margin-top:.15em}
+.votecard .vc-ghost{font-family:'Charmonman',cursive; font-weight:700; font-size:2.3em; line-height:1.25; color:#fbf4ec; margin:.12em 0 .08em; padding-top:.08em;
+  text-shadow:0 0 .12em rgba(194,42,42,.85), 0 .06em .3em rgba(125,12,12,.8)}
+.votecard .vc-tag{font-family:'Mitr',sans-serif; font-size:.85em; color:#ecd6a6; line-height:1.3}
+
+.votecard .vc-qr{position:absolute; right:.4em; z-index:6; text-align:center; width:4.4em; bottom:calc(100% + .6em)}
+.votecard .vc-qrbox{background:#fff; padding:.25em; border-radius:.35em; border:.09em solid #b99b6b; box-shadow:0 .25em .7em rgba(0,0,0,.65)}
+.votecard .vc-qrbox img,.votecard .vc-qrbox canvas{width:100%!important; height:auto!important; display:block}
+.votecard .vc-qrbox canvas{display:none!important}
+.votecard .vc-qrcap{font-family:'Mitr',sans-serif; font-size:.65em; color:#ecd6a6; margin-top:.3em; line-height:1.2;
+  text-shadow:0 .06em .2em rgba(0,0,0,.9)}
+.cardbtns{display:flex; gap:10px; margin-top:16px}
+.cardhint{font-size:11.5px; color:var(--dim); text-align:center; margin-top:10px}
+
+/* ===== กรอบทองเงาวาว ===== */
+.votecard .vc-frame,.votecard .vc-frame2{display:none}
+.votecard .vc-goldframe{position:absolute; inset:0; width:100%; height:100%; z-index:3; pointer-events:none;
+  filter:drop-shadow(0 0 .25em rgba(246,220,149,.35))}
+.votecard .vc-shine{position:absolute; inset:0; z-index:6; pointer-events:none; overflow:hidden; border-radius:inherit}
+.votecard .vc-shine::before{content:""; position:absolute; top:-20%; left:0; width:35%; height:140%;
+  background:linear-gradient(100deg, transparent, rgba(255,240,200,.18) 45%, rgba(255,250,230,.32) 50%, rgba(255,240,200,.18) 55%, transparent);
+  transform:translate3d(-180%,0,0) rotate(12deg); will-change:transform; animation:vcShine 4.5s ease-in-out infinite}
+/* ใช้ transform -> GPU ช่วยวาด ลื่นทุกเครื่อง ไม่ต้องคำนวณ layout ใหม่ทุกเฟรม */
+@keyframes vcShine{0%,55%{transform:translate3d(-180%,0,0) rotate(12deg)}100%{transform:translate3d(380%,0,0) rotate(12deg)}}
+/* เครื่องที่ตั้งลดภาพเคลื่อนไหว -> ปิดแสงวิ่ง */
+@media (prefers-reduced-motion: reduce){.votecard .vc-shine::before{animation:none; display:none}}
+</style>
+</head>
+<body class="intro-lock">
+
+<!-- Intro splash: วิดีโอเป็นแบ็คกราวด์ + ฟอนต์ซ้อน -->
+<div id="introScreen">
+  <video id="introVideo" class="intro-video" autoplay muted playsinline preload="auto" poster="assets/intro-bg.jpg">
+    <source src="assets/intro.mp4" type="video/mp4">
+  </video>
+  <div class="intro-dark"></div>
+  <div class="intro-vignette"></div>
+  <div class="intro-title">โหวตผีไทย<br>ที่คุณหลอนมากที่สุด</div>
+  <button class="skipbtn" onclick="endIntro()">ข้าม ✕</button>
+</div>
+
+
+<div class="fog-layer"></div>
+<div class="fog-layer two"></div>
+<div class="fog-layer three"></div>
+<div class="embers" id="embers"></div>
+<div class="smoke-field" id="smokeField"></div>
+
+<nav><div class="wrap">
+  <div class="logo">COM7<small>โหวตผีไทยที่คุณหลอนมากที่สุด</small></div>
+  <div class="navlinks">
+    <a href="#ghosts">โหวต</a><a href="#about">เกี่ยวกับกิจกรรม</a><a href="#rules">กติกา</a><a href="#contact">ติดต่อเรา</a>
+  </div>
+  <button class="adminbtn soundbtn" id="soundBtn" onclick="toggleSound()" title="เพลงประกอบ">🔇 เพลง</button>
+  <button class="adminbtn" onclick="openAdmin()">สำหรับแอดมิน ⚙</button>
+</div></nav>
+
+<section class="hero">
+  <div class="wrap">
+    <h1>โหวตผีไทย<br>ที่คุณหลอนมากที่สุด</h1>
+    <p class="lead">อ่านตำนานความสยอง แล้วเลือกผีที่ทำให้คุณขนลุกที่สุด — โหวตได้เพียง 1 ตัวเท่านั้น</p>
+    <div class="statuscard">
+      <div class="tag" id="statusTag"><span class="dot closed"></span>กำลังตรวจสอบสถานะ…</div>
+      <div class="statusline" id="statusLine">—</div>
+      <div class="countdown" id="countdown"></div>
+      <button class="cta" id="ctaBtn" onclick="scrollToGhosts()">ไปโหวตเลย</button>
+      <div class="finenote">* โหวตได้ 1 ครั้ง และเปลี่ยนใจได้ก่อนปิดโหวต</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="ghosts"><div class="wrap">
+  <h2>เลือกผีที่คุณหลอนที่สุด</h2>
+  <div class="grid" id="ghostGrid"></div>
+</div></section>
+
+<section class="section" id="about"><div class="wrap" style="text-align:center; max-width:640px; margin:0 auto">
+  <h2>เกี่ยวกับกิจกรรม</h2>
+  <p style="color:var(--dim); font-size:14px">กิจกรรมโหวตผีไทยที่คุณหลอนมากที่สุด จัดขึ้นเพื่อร่วมสืบสานตำนานความเชื่อของไทย และแบ่งปันความหลอนให้คงอยู่ตลอดไป ผลโหวตจะถูกเก็บเป็นความลับ และใช้สำหรับจับรางวัลผู้โชคดีจากผู้ที่โหวตให้ผีที่ได้รับความนิยมสูงสุดเท่านั้น</p>
+</div></section>
+
+<section class="section" id="rules"><div class="wrap" style="text-align:center; max-width:560px; margin:0 auto">
+  <h2>กติกาการโหวต</h2>
+  <p style="color:var(--dim); font-size:14px; text-align:left">
+    1. โหวตได้คนละ 1 เสียง โดยเลือกผีที่หลอนที่สุดเพียง 1 ตัว<br>
+    2. สามารถเปลี่ยนใจโหวตใหม่ได้ ตราบใดที่ยังไม่ปิดรับโหวต<br>
+    3. ต้องกรอกบริษัท รหัสพนักงาน และชื่อ-นามสกุลให้ครบทุกครั้งที่โหวต<br>
+    4. ระบบตรวจสอบการโหวตซ้ำด้วยรหัสพนักงาน ป้องกันการโกงโหวต<br>
+    5. ผลโหวตจะไม่เปิดเผยระหว่างกิจกรรม และใช้สำหรับจับรางวัลผู้โชคดีเท่านั้น
+  </p>
+</div></section>
+
+<footer id="contact"><div class="wrap">
+  <div class="fname">โหวตผีไทย</div>
+  <div>สอบถามเพิ่มเติมโทร 7224 หรือ 7213</div>
+</div></footer>
+
+<!-- ghost legend modal -->
+<div class="overlay" id="legendOverlay">
+  <div class="modal">
+    <button class="close" onclick="closeModal('legendOverlay')">✕</button>
+    <div class="modalimg" id="lgImg"></div>
+    <h3 id="lgName"></h3>
+    <div class="sub" id="lgSub"></div>
+    <div class="legend" id="lgText"></div>
+    <div class="btnrow">
+      <button class="btn ghostbtn" onclick="closeModal('legendOverlay')">ปิด</button>
+      <button class="btn primary" onclick="chooseFromLegend()">โหวตตัวนี้</button>
+    </div>
+  </div>
+</div>
+
+<!-- vote form modal -->
+<div class="overlay" id="voteOverlay">
+  <div class="modal">
+    <button class="close" onclick="closeModal('voteOverlay')">✕</button>
+    <h3 style="font-size:26px">ยืนยันการโหวต</h3>
+    <div class="pickedGhost">คุณเลือก: <b id="voteGhostName"></b></div>
+    <label>บริษัท</label>
+    <select id="company">
+      <option value="">-- เลือกบริษัท --</option>
+      <option>บริษัท คอมเซเว่น จำกัด (มหาชน)</option>
+      <option>บริษัท ดับเบิ้ล เซเว่น จำกัด</option>
+      <option>บริษัท ซี โนว์ ฮาว จำกัด</option>
+      <option>บริษัท เอเดพท์ จำกัด</option>
+      <option>บริษัท ธันเดอร์ ฟิน ฟิน จำกัด</option>
+      <option>บริษัท ไอแคร์ประกันภัย จำกัด (มหาชน)</option>
+      <option>บริษัท ไอเทค ซอฟต์แวร์ จำกัด</option>
+      <option>บริษัท โฟร์พอส์ จำกัด</option>
+      <option>บริษัท อินเตอร์วิชั่น บิสิเนสกรุ๊ป จำกัด</option>
+      <option>บริษัท แบรกซ์3853 จำกัด</option>
+      <option>บริษัท แบรกซ์แอนด์เบน จำกัด</option>
+      <option>บริษัท โกลด์อินทิเกรท จำกัด</option>
+      <option>EV7 Company Limited</option>
+    </select>
+    <label>รหัสพนักงาน</label>
+    <input id="empId" placeholder="เช่น 00123">
+    <label>ชื่อ-นามสกุล</label>
+    <input id="empName" placeholder="ชื่อของคุณ">
+    <div class="btnrow" style="margin-top:20px">
+      <button class="btn ghostbtn" onclick="closeModal('voteOverlay')">ยกเลิก</button>
+      <button class="btn primary" id="submitVoteBtn" onclick="submitVote()">ยืนยันโหวต</button>
+    </div>
+  </div>
+</div>
+
+<!-- การ์ดกิจกรรมหลังโหวต -->
+<div class="overlay" id="cardOverlay">
+  <div class="modal" style="max-width:440px">
+    <button class="close" onclick="closeModal('cardOverlay')">✕</button>
+    <h3 style="font-size:24px; color:#f6f1ea; text-shadow:0 0 10px rgba(255,255,255,.4)">การ์ดร่วมกิจกรรม 🎃</h3>
+    <div class="sub" style="margin-bottom:10px">ดาวน์โหลดหรือแชร์การ์ดของคุณได้เลย</div>
+
+    <div id="voteCard" class="votecard">
+      <div class="vc-img" id="vcImg"></div>
+      <div class="vc-overlay"></div>
+      <div class="vc-cloth l"></div><div class="vc-cloth r"></div>
+      <div class="vc-frame"></div><div class="vc-frame2"></div>
+      <svg class="vc-goldframe" viewBox="0 0 400 500" preserveAspectRatio="none">
+        <defs><linearGradient id="vcGold" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#7a5622"/><stop offset=".18" stop-color="#f6dc95"/><stop offset=".32" stop-color="#b8862e"/>
+          <stop offset=".5" stop-color="#fff4c8"/><stop offset=".68" stop-color="#a77a2a"/><stop offset=".84" stop-color="#f0d184"/><stop offset="1" stop-color="#6e4c1c"/>
+        </linearGradient></defs>
+        <rect x="5" y="5" width="390" height="490" rx="6" fill="none" stroke="url(#vcGold)" stroke-width="3.2"/>
+        <rect x="11" y="11" width="378" height="478" rx="4" fill="none" stroke="url(#vcGold)" stroke-width="1" opacity=".75"/>
+      </svg>
+      <div class="vc-shine"></div>
+      <div class="vc-corner tl"><svg viewBox="0 0 48 48" fill="none" stroke="#d8bd8a" stroke-linecap="round"><path d="M3 45V12C3 7 7 3 12 3h33" stroke-width="1.5"/><path d="M8 45V16c0-4.5 3.5-8 8-8h29" stroke-width=".8" opacity=".7"/><path d="M6 6c7-1 13 2 14 9-3-3-7-3-9-1 1-3 0-6-5-8z" fill="#d8bd8a" stroke="none"/><path d="M20 15c2-4 6-5 9-3-3 0-5 2-5 5" stroke-width="1.1"/><path d="M15 20c-4 2-5 6-3 9 0-3 2-5 5-5" stroke-width="1.1"/><path d="M27 3c0 3 2 5 5 5 M3 27c3 0 5 2 5 5" stroke-width="1"/><circle cx="35" cy="8" r="1.3" fill="#d8bd8a" stroke="none"/><circle cx="8" cy="35" r="1.3" fill="#d8bd8a" stroke="none"/></svg></div>
+      <div class="vc-corner tr"><svg viewBox="0 0 48 48" fill="none" stroke="#d8bd8a" stroke-linecap="round"><path d="M3 45V12C3 7 7 3 12 3h33" stroke-width="1.5"/><path d="M8 45V16c0-4.5 3.5-8 8-8h29" stroke-width=".8" opacity=".7"/><path d="M6 6c7-1 13 2 14 9-3-3-7-3-9-1 1-3 0-6-5-8z" fill="#d8bd8a" stroke="none"/><path d="M20 15c2-4 6-5 9-3-3 0-5 2-5 5" stroke-width="1.1"/><path d="M15 20c-4 2-5 6-3 9 0-3 2-5 5-5" stroke-width="1.1"/><path d="M27 3c0 3 2 5 5 5 M3 27c3 0 5 2 5 5" stroke-width="1"/><circle cx="35" cy="8" r="1.3" fill="#d8bd8a" stroke="none"/><circle cx="8" cy="35" r="1.3" fill="#d8bd8a" stroke="none"/></svg></div>
+      <div class="vc-corner bl"><svg viewBox="0 0 48 48" fill="none" stroke="#d8bd8a" stroke-linecap="round"><path d="M3 45V12C3 7 7 3 12 3h33" stroke-width="1.5"/><path d="M8 45V16c0-4.5 3.5-8 8-8h29" stroke-width=".8" opacity=".7"/><path d="M6 6c7-1 13 2 14 9-3-3-7-3-9-1 1-3 0-6-5-8z" fill="#d8bd8a" stroke="none"/><path d="M20 15c2-4 6-5 9-3-3 0-5 2-5 5" stroke-width="1.1"/><path d="M15 20c-4 2-5 6-3 9 0-3 2-5 5-5" stroke-width="1.1"/><path d="M27 3c0 3 2 5 5 5 M3 27c3 0 5 2 5 5" stroke-width="1"/><circle cx="35" cy="8" r="1.3" fill="#d8bd8a" stroke="none"/><circle cx="8" cy="35" r="1.3" fill="#d8bd8a" stroke="none"/></svg></div>
+      <div class="vc-corner br"><svg viewBox="0 0 48 48" fill="none" stroke="#d8bd8a" stroke-linecap="round"><path d="M3 45V12C3 7 7 3 12 3h33" stroke-width="1.5"/><path d="M8 45V16c0-4.5 3.5-8 8-8h29" stroke-width=".8" opacity=".7"/><path d="M6 6c7-1 13 2 14 9-3-3-7-3-9-1 1-3 0-6-5-8z" fill="#d8bd8a" stroke="none"/><path d="M20 15c2-4 6-5 9-3-3 0-5 2-5 5" stroke-width="1.1"/><path d="M15 20c-4 2-5 6-3 9 0-3 2-5 5-5" stroke-width="1.1"/><path d="M27 3c0 3 2 5 5 5 M3 27c3 0 5 2 5 5" stroke-width="1"/><circle cx="35" cy="8" r="1.3" fill="#d8bd8a" stroke="none"/><circle cx="8" cy="35" r="1.3" fill="#d8bd8a" stroke="none"/></svg></div>
+
+      <div class="vc-headplate">
+        <div class="vc-head">COM7 Halloween 2026</div>
+      </div>
+
+      <div class="vc-plate">
+        <div class="vc-qr">
+          <div class="vc-qrbox"><div id="vcQr"></div></div>
+          <div class="vc-qrcap">สแกนเข้าร่วมโหวต</div>
+        </div>
+        <div class="vc-person"><span id="vcId"></span> <span id="vcName"></span></div>
+        <div class="vc-orn"><i></i>❖<i></i></div>
+        <div class="vc-mid">โหวตให้</div>
+        <div class="vc-ghost" id="vcGhost"></div>
+        <div class="vc-tag">คือผีที่หลอนที่สุด</div>
+      </div>
+    </div>
+
+    <div class="cardbtns">
+      <button class="btn ghostbtn" style="border-color:var(--gold); color:var(--gold)" id="dlCardBtn" onclick="downloadCard()">⬇ ดาวน์โหลด</button>
+      <button class="btn primary" id="shareCardBtn" onclick="shareCard()">📤 แชร์การ์ด</button>
+    </div>
+    <div class="cardhint">ได้รูปความละเอียดสูง 1080 × 1350 px</div>
+  </div>
+</div>
+
+<!-- ยืนยันเปลี่ยนผลโหวต -->
+<div class="overlay" id="changeOverlay">
+  <div class="modal" style="max-width:400px; text-align:center">
+    <h3 style="font-size:24px">เปลี่ยนผลโหวต?</h3>
+    <div class="legend" id="changeMsg" style="margin:10px 0 20px"></div>
+    <div class="btnrow">
+      <button class="btn ghostbtn" onclick="closeModal('changeOverlay')">ไม่เปลี่ยน</button>
+      <button class="btn primary" id="confirmChangeBtn" onclick="confirmChangeVote()">ยืนยันเปลี่ยน</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ====== ตั้งค่า endpoint ของ Google Apps Script Web App ที่นี่ ====== */
+const API_URL = "https://script.google.com/macros/s/AKfycbxx1ls-K26TDs6-Jk3isWIuz2euBsbampQxMheb_8vwB0HGYh3VN5vQgX8YkrHvIPj-/exec";
+
+/* ====== ลิงก์ที่ QR Code บนการ์ดจะพาไป ======
+   ค่าเริ่มต้น = ลิงก์หน้าเว็บนี้ ถ้าเว็บจริงใช้ลิงก์อื่น ให้ใส่ตรงนี้ เช่น "https://example.com/vote/" */
+const SITE_URL = "https://com7er.github.io/com7halloween2026/";
+
+// ===== ตัวช่วยเรียก backend แบบมี timeout กันหน้าค้าง =====
+async function apiFetch(url, options){
+  options = options || {};
+  const ctrl = new AbortController();
+  const t = setTimeout(()=>ctrl.abort(), 8000); // 8 วินาที
+  try{
+    const res = await fetch(url, Object.assign({}, options, {
+      signal: ctrl.signal,
+      redirect: "follow"
+    }));
+    return res;
+  } finally { clearTimeout(t); }
+}
+
+
+/* โหมดพรีวิว: ถ้ายังไม่ได้ตั้งค่า API_URL (ยังเป็น XXXX) เว็บจะทำงานแบบจำลอง
+   เพื่อให้ดูหน้าตา/ทดลองกดได้ทันที โดยไม่ต้องต่อ backend */
+const PREVIEW_MODE = API_URL.includes("XXXXXXXXXXXXXX");
+
+let GHOSTS = [
+ {id:"krasue", name:"กระสือ", sub:"หญิงสาวร่างท่อนบนลอยได้ กินไส้สด", glyph:"🦇", imageUrl:"assets/krasue.jpg",
+  legend:"ผีพื้นบ้านไทยที่เป็นความหวาดกลัวของผู้คนในชนบทมาอย่างยาวนาน เล่ากันว่ากระสือเป็นผีผู้หญิงที่มีคาถาอาคมหรือรับสืบทอดเชื้อสายต่อกันมา ในยามค่ำคืนร่างที่แท้จริงจะนอนนิ่งอยู่กับที่ ปล่อยให้ดวงจิตแยกออกจากร่างพร้อมกับหัวและไส้ลอยละล่องออกไปหากินของคาว เลือด และสิ่งสกปรกตามบ้านเรือน ชาวบ้านมักเห็นดวงไฟสีเขียวเรืองแสงวับแวมลอยไปมาในความมืด"},
+ {id:"blackdress", name:"ผีนางรำ", sub:"วิญญาณนาฏศิลป์ผู้ยึดมั่นในครูและคำสาปแห่งความอาฆาต", glyph:"🖤", imageUrl:"assets/blackdress.jpg",
+  legend:"วิญญาณหญิงสาวในชุดไทยโบราณและชฎาสีทอง ผู้เคยมีชีวิตผูกพันอยู่กับเสียงเพลงและศิลปะการร่ายรำ แต่ต้องจบชีวิตลงอย่างกะทันหันด้วยความอยุติธรรมและความแค้นฝังอก ดวงจิตที่เต็มไปด้วยความยึดติดทำให้เธอยังคงวนเวียนอยู่ตามโรงละครเก่า ศาลพระภูมิ หรือห้องนาฏศิลป์ยามวิกาล มักมาพร้อมเสียงดนตรีไทยแสนวังเวงและเสียงฉิ่งที่ดังระรัว"},
+ {id:"pret", name:"เปรต", sub:"วิญญาณผู้หิวโหยชดใช้กรรมในนรก", glyph:"👤", imageUrl:"assets/pret.jpg",
+  legend:"ตามความเชื่อทางพุทธศาสนาและพื้นบ้าน เปรตคือดวงวิญญาณของผู้ที่เคยทำบาปหนักตอนมีชีวิต เมื่อตายไปจึงต้องมาเกิดเป็นเปรตเพื่อชดใช้กรรม รูปร่างสูงชะลูดเหมือนต้นตาล มือยาวใหญ่ แต่ปากเท่ารูเข็มทำให้กินอะไรไม่ได้ และต้องทนทุกข์ทรมานพร้อมส่งเสียงกรีดร้องขอส่วนบุญในยามค่ำคืน"},
+ {id:"maenak", name:"แม่นาคพระโขนง", sub:"วิญญาณรักแท้ข้ามภพข้ามชาติและแรงอาฆาตอันน่าสะพรึงกลัว", glyph:"🌙", imageUrl:"assets/maenak.jpg",
+  legend:"หญิงสาวท้องแก่ที่เสียชีวิตระหว่างคลอดลูกพร้อมกับลูกในท้อง แต่ด้วยความรักและห่วงหาที่มีต่อสามี ทำให้วิญญาณของเธอยังคงวนเวียนรอคอยการกลับมาของสามีที่บ้านริมคลองพระโขนง ใครที่เข้ามาล่วงเกินหรือทำร้ายความรู้สึกมักจะต้องพบกับจุดจบอันสยดสยอง โดยเฉพาะฉากเด็ดมือยาวเก็บมะนาวใต้ถุนบ้าน"},
+ {id:"childghost", name:"ผีตีนกลับ", sub:"วิญญาณอาฆาตแห่งพงไพร ผู้หันหลังเดินหน้ากลับสู่ยมโลกด้วยแรงแค้น", glyph:"🎈", imageUrl:"assets/childghost.jpg",
+  legend:"วิญญาณร้ายที่สิงสถิตอยู่ตามป่าทึบหรือทางสามแพร่ง มักเป็นดวงวิญญาณของคนที่ตายอย่างอนาถ ทุรนทุราย หรือถูกฆาตกรรมอย่างโหดเหี้ยม ลักษณะที่น่าสะพรึงกลัวที่สุดคือส่วนเท้าจะหันไปข้างหลังในขณะที่ใบหน้าและลำตัวหันไปข้างหน้า เมื่อปรากฏตัวมักมาพร้อมกลิ่นเหม็นเน่ารุนแรงและเสียงกรีดร้องโหยหวน"},
+ {id:"takien", name:"เจ้าแม่ตะเคียน", sub:"วิญญาณต้นตะเคียนผู้ปกปักรักษา", glyph:"🌳", imageUrl:"assets/takien.jpg",
+  legend:"สิงสถิตอยู่ในต้นตะเคียนโบราณกลางป่าลึก ทั้งปกป้องผืนป่าและลงโทษผู้ที่คิดล่วงล้ำอย่างไม่เกรงกลัว แสงไฟวูบวาบยามค่ำคืนรอบต้นไม้ใหญ่ คือสัญญาณว่านางกำลังจับตามองอยู่"},
+ {id:"phisang", name:"ผีตายโหง", sub:"วิญญาณที่ตายด้วยความรุนแรงและฉับพลัน เต็มไปด้วยความพยาบาท", glyph:"🌲", imageUrl:"assets/phisang.jpg",
+  legend:"ผีที่เกิดจากคนที่เสียชีวิตอย่างกะทันหันและทรมาน เช่น อุบัติเหตุ ฆาตกรรม หรือฆ่าตัวตาย วิญญาณเหล่านี้มักจะยังไม่รู้ตัวว่าตนเองตายและยังวนเวียนอยู่ที่จุดเกิดเหตุด้วยความอาฆาตหวาดกลัว มักจะปรากฏร่างในสภาพที่น่ากลัวและชวนสยดสยองเพื่อหาตัวตายตัวแทน"},
+ {id:"pob", name:"ผีปอบ", sub:"วิญญาณร้ายสิงร่างเพื่อกินเนื้อคน", glyph:"💀", imageUrl:"assets/pob.jpg",
+  legend:"วิญญาณร้ายที่แฝงตัวเข้าสิงร่างคนธรรมดาในหมู่บ้าน กินเครื่องในสดเป็นอาหารยามค่ำคืนโดยเจ้าของร่างไม่รู้ตัว หมู่บ้านที่มีปอบสิงมักพบศพผู้เสียชีวิตอย่างประหลาดต่อเนื่องหลายราย"},
+ {id:"ghost_1790571333054", name:"ผีพราย", sub:"วิญญาณร้ายแห่งสายน้ำ", glyph:"🌊", imageUrl:"assets/ghost_1790571333054.jpg",
+  legend:"สิ่งลี้ลับที่เชื่อว่าสถิตอยู่ตามแม่น้ำ คลอง และหนองน้ำ มักปรากฏกายในยามค่ำคืนเพื่อหลอกล่อผู้คน บางตำนานเล่าว่าพรายสามารถเข้าสิงมนุษย์ ทำให้ผู้ถูกสิงมีอาการผิดปกติและเจ็บป่วย จนต้องทำพิธีตัดพรายเพื่อขับไล่วิญญาณออกจากร่าง"},
+ {id:"ghost_1790576763832", name:"นางตานี", sub:"ผีสาวแห่งต้นกล้วยตานี", glyph:"🍌", imageUrl:"assets/ghost_1790576763832.jpg",
+  legend:"นางตานีเป็นผีหญิงตามความเชื่อพื้นบ้านไทย เชื่อว่าสถิตอยู่ในต้นกล้วยตานี มักปรากฏเป็นหญิงสาวสวยผมยาว สวมชุดสีเขียวในเวลากลางคืน บางเรื่องเล่าว่านางตานีจะหลอกคนที่เดินผ่าน หรือคอยปกป้องต้นกล้วยและพื้นที่ของตนเอง"},
+ {id:"ghost_1790583659075", name:"ผีกะ", sub:"วิญญาณลึกลับตามความเชื่อพื้นบ้านล้านนาภาคเหนือ", glyph:"🔥", imageUrl:"assets/ghost_1790583659075.jpg",
+  legend:"ผีกะเป็นหนึ่งในความเชื่อเรื่องผีและไสยศาสตร์ที่สืบทอดกันมาในสังคมล้านนา เรื่องราวของผีกะมีความแตกต่างกันไปในแต่ละพื้นที่ บางตำนานเชื่อมโยงกับผู้ที่เกี่ยวข้องกับคาถาอาคมหรือการเลี้ยงผี และมีการเล่าถึงการปรากฏตัวในยามค่ำคืน"},
+ {id:"ghost_1790584059193", name:"ผีฟ้า", sub:"เสียงแค้นในคืนเงียบงัน...กับวิญญาณจากฟากฟ้า", glyph:"⚡", imageUrl:"assets/ghost_1790584059193.jpg",
+  legend:"ผีฟ้าเป็นความเชื่อพื้นบ้านของชาวอีสานและลุ่มน้ำโขง เชื่อมโยงกับสิ่งศักดิ์สิทธิ์และอำนาจเหนือธรรมชาติ มักปรากฏในพิธีกรรมที่มีการฟ้อนรำ ดนตรีแคน และการบูชาเพื่อขอความคุ้มครองหรือรักษาอาการเจ็บป่วย"},
+];
+
+// แปลงลิงก์รูป Google Drive ให้เป็นรูปแบบที่ฝังโชว์ได้ชัวร์ (thumbnail)
+// cache-buster รูป: เปลี่ยนทุกครั้งที่เปิด/รีเฟรชหน้า (รูปใหม่ขึ้นเสมอ ไม่ค้างของเก่า)
+// แต่คงที่ระหว่างเปิดหน้าอยู่ ไม่โหลดรูปซ้ำทุก 10 วิ
+const IMG_CB = Date.now();
+function driveImg(url){
+  if(!url) return "";
+  var m = url.match(/[-\w]{25,}/);           // ดึง file id จากลิงก์รูปแบบใดก็ได้
+  if(m) return "https://drive.google.com/thumbnail?id=" + m[0] + "&sz=w1000&cb=" + IMG_CB;
+  return url;                                  // ไม่ใช่ลิงก์ Drive (เช่น assets/..) ใช้ตามเดิม
+}
+let selectedGhost = null;
+let voteStatus = {open:false, endTime:null};
+let countdownTimer = null;
+
+/* ===== spooky embers ===== */
+function spawnEmbers(){
+  const box = document.getElementById("embers");
+  const n = 26;
+  for(let i=0;i<n;i++){
+    const e = document.createElement("div");
+    e.className = "ember";
+    e.style.left = Math.random()*100 + "%";
+    const dur = 9 + Math.random()*12;
+    e.style.animationDuration = dur + "s";
+    e.style.animationDelay = (-Math.random()*dur) + "s";
+    const size = 2 + Math.random()*3;
+    e.style.width = e.style.height = size + "px";
+    e.style.opacity = .3 + Math.random()*.4;
+    box.appendChild(e);
+  }
+}
+
+function renderGrid(){
+  const g = document.getElementById("ghostGrid");
+  g.innerHTML = GHOSTS.map((gh,i) => `
+    <div class="card" id="card-${gh.id}" onclick="openLegend('${gh.id}')">
+      ${gh.imageUrl ? `<img class="cardimg" src="${driveImg(gh.imageUrl)}" referrerpolicy="no-referrer" alt="" onerror="this.style.display='none'">` : `<div class="noimg">${gh.glyph}</div>`}
+      <div class="num">${String(i+1).padStart(2,"0")}</div>
+      <div class="overlay-grad"></div>
+      <div class="info">
+        <h3>${gh.name}</h3>
+        <p>${gh.sub}</p>
+        <span class="viewbtn">ดูรายละเอียด</span>
+        <div class="selectedTag">✓ เลือกไว้แล้ว</div>
+      </div>
+    </div>`).join("");
+}
+
+async function loadGhosts(){
+  if(PREVIEW_MODE){ renderGrid(); return; }   // โหมดพรีวิวใช้ข้อมูลในไฟล์
+  try{
+    const res = await apiFetch(API_URL + "?action=ghosts&t=" + Date.now());
+    const data = await res.json();
+    if(data.ok && data.ghosts){
+      // สร้างรายการผีใหม่ทั้งหมดจาก backend (เป็นแหล่งข้อมูลหลัก)
+      // -> ผีที่แอดมินเพิ่มใหม่จะโผล่, ผีที่ลบจะหายไป
+      const glyphs = {krasue:"🦇",blackdress:"🖤",pret:"👤",maenak:"🌙",childghost:"🎈",takien:"🌳",phisang:"🌲",pob:"💀"};
+      GHOSTS = data.ghosts.map(r=>{
+        const old = GHOSTS.find(g=>g.id===r.ghostId) || {};
+        return {
+          id: r.ghostId,
+          name: r.name || old.name || "",
+          sub: r.sub || old.sub || "",
+          legend: r.legend || old.legend || "",
+          glyph: old.glyph || glyphs[r.ghostId] || "👻",
+          imageUrl: r.imageUrl || old.imageUrl || ""
+        };
+      });
+      renderGrid();
+    }
+  }catch(e){
+    // ถ้าต่อ backend ไม่ได้ ให้แสดงผีเริ่มต้นในโค้ดไว้ก่อน (ไม่ปล่อยจอค้าง "กำลังโหลด…")
+    renderGrid();
+  }
+}
+
+function openLegend(id){
+  const gh = GHOSTS.find(x=>x.id===id);
+  document.getElementById("lgImg").innerHTML = gh.imageUrl ? `<img src="${driveImg(gh.imageUrl)}" referrerpolicy="no-referrer" style="width:100%;height:100%;object-fit:contain" alt="">` : "";
+  document.getElementById("lgName").textContent = gh.name;
+  document.getElementById("lgSub").textContent = gh.sub;
+  document.getElementById("lgText").textContent = gh.legend;
+  document.getElementById("legendOverlay").dataset.ghost = id;
+  showModal("legendOverlay");
+}
+function chooseFromLegend(){
+  const id = document.getElementById("legendOverlay").dataset.ghost;
+  closeModal("legendOverlay");
+  openVoteForm(id);
+}
+function openVoteForm(id){
+  if(!voteStatus.open){ toast("ขณะนี้ปิดรับโหวตแล้ว"); return; }
+  const gh = GHOSTS.find(x=>x.id===id);
+  selectedGhost = gh;
+  document.getElementById("voteGhostName").textContent = gh.name;
+  showModal("voteOverlay");
+}
+function showModal(id){ document.getElementById(id).classList.add("show"); }
+function closeModal(id){ document.getElementById(id).classList.remove("show"); }
+function scrollToGhosts(){ document.getElementById("ghosts").scrollIntoView({behavior:"smooth"}); }
+
+function toast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"), 3200);
+}
+
+async function submitVote(){
+  const company = document.getElementById("company").value;
+  const empId = document.getElementById("empId").value.trim();
+  const empName = document.getElementById("empName").value.trim();
+  if(!company || !empId || !empName){ toast("กรุณากรอกข้อมูลให้ครบ"); return; }
+  const btn = document.getElementById("submitVoteBtn");
+  btn.disabled = true; btn.textContent = "กำลังบันทึก…";
+
+  if(PREVIEW_MODE){
+    setTimeout(()=>{
+      toast("(พรีวิว) บันทึกการโหวตแล้ว ✓ ขอบคุณค่ะ");
+      markPicked(selectedGhost.id);
+      closeModal("voteOverlay");
+      showVoteCard({empId, empName, ghostId:selectedGhost.id, ghostName:selectedGhost.name});
+      btn.disabled = false; btn.textContent = "ยืนยันโหวต";
+    }, 700);
+    return;
+  }
+
+  try{
+    const res = await apiFetch(API_URL, {
+      method:"POST",
+      body: JSON.stringify({action:"vote", company, empId, empName, ghostId:selectedGhost.id, ghostName:selectedGhost.name})
+    });
+    const data = await res.json();
+    if(!data.ok && data.needConfirm){
+      // เคยโหวตตัวอื่นแล้ว -> ถามยืนยันก่อนเปลี่ยน
+      pendingVote = {company, empId, empName, ghostId:selectedGhost.id, ghostName:selectedGhost.name};
+      const prev = data.prevGhostName ? ("“"+data.prevGhostName+"”") : "ผีตัวอื่น";
+      document.getElementById("changeMsg").innerHTML =
+        "รหัสพนักงานนี้โหวตให้ <b>"+escapeHtml(prev)+"</b> ไปแล้ว<br>ต้องการเปลี่ยนเป็น <b>“"+escapeHtml(selectedGhost.name)+"”</b> ใช่ไหม?";
+      closeModal("voteOverlay");
+      showModal("changeOverlay");
+    } else if(data.ok){
+      toast("บันทึกการโหวตแล้ว ✓ ขอบคุณค่ะ");
+      markPicked(selectedGhost.id);
+      closeModal("voteOverlay");
+      showVoteCard({empId, empName, ghostId:selectedGhost.id, ghostName:selectedGhost.name});
+    } else {
+      toast(data.message || "เกิดข้อผิดพลาด กรุณาลองใหม่");
+    }
+  }catch(e){
+    toast("เชื่อมต่อไม่สำเร็จ กรุณาลองใหม่อีกครั้ง");
+  }
+  btn.disabled = false; btn.textContent = "ยืนยันโหวต";
+}
+
+
+/* ===== ยืนยันเปลี่ยนผลโหวต ===== */
+let pendingVote = null;
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch])); }
+async function confirmChangeVote(){
+  if(!pendingVote) return;
+  const btn = document.getElementById("confirmChangeBtn");
+  btn.disabled = true; btn.textContent = "กำลังบันทึก…";
+  try{
+    const res = await apiFetch(API_URL, {method:"POST",
+      body: JSON.stringify(Object.assign({action:"vote", confirmChange:true}, pendingVote))});
+    const data = await res.json();
+    if(data.ok){
+      toast("เปลี่ยนผลโหวตแล้ว ✓");
+      markPicked(pendingVote.ghostId);
+      closeModal("changeOverlay");
+      showVoteCard({empId:pendingVote.empId, empName:pendingVote.empName, ghostId:pendingVote.ghostId, ghostName:pendingVote.ghostName});
+      pendingVote = null;
+    } else { toast(data.message || "เกิดข้อผิดพลาด กรุณาลองใหม่"); }
+  }catch(e){ toast("เชื่อมต่อไม่สำเร็จ กรุณาลองใหม่อีกครั้ง"); }
+  btn.disabled = false; btn.textContent = "ยืนยันเปลี่ยน";
+}
+/* ================== การ์ดกิจกรรมหลังโหวต ================== */
+let lastVote = null;
+let cardBlob = null;          // รูปการ์ดที่สร้างรอไว้ (ให้กดแชร์/ดาวน์โหลดได้ทันที)
+let cardBlobKey = "";         // กันใช้รูปเก่าเมื่อข้อมูลเปลี่ยน
+const CARD_W = 1080, CARD_H = 1350;   // ขนาดรูปที่ดาวน์โหลด (4:5)
+
+function cardImgSrc(gh){
+  // ใช้รูป local (same-origin) ก่อนเสมอ -> html2canvas จับได้ชัวร์
+  if(gh.imageUrl && gh.imageUrl.indexOf("assets/")===0) return gh.imageUrl;
+  return "assets/" + gh.id + ".jpg";
+}
+function fitCard(){
+  const c = document.getElementById("voteCard");
+  if(c && c.offsetWidth) c.style.fontSize = (c.offsetWidth/30) + "px";
+}
+function buildQr(){
+  const box = document.getElementById("vcQr");
+  if(!box || box.dataset.done || typeof QRCode === "undefined") return;
+  new QRCode(box, {text:SITE_URL, width:400, height:400, colorDark:"#120808", colorLight:"#ffffff", correctLevel:QRCode.CorrectLevel.M});
+  box.dataset.done = "1";
+}
+function showVoteCard(info){
+  lastVote = info; cardBlob = null; cardBlobKey = "";
+  const gh = GHOSTS.find(g=>g.id===info.ghostId) || {};
+  const localSrc = cardImgSrc(gh);
+  const vcImg = document.getElementById("vcImg");
+  const pre = new Image();
+  pre.onload = ()=>{ vcImg.style.backgroundImage = "url('"+localSrc+"')"; };
+  pre.onerror = ()=>{
+    // ถ้า local ไม่มี (ผีที่แอดมินเพิ่มใหม่ยังไม่มีรูป local) ค่อย fallback Drive
+    const d = gh.imageUrl ? driveImg(gh.imageUrl) : "";
+    vcImg.style.backgroundImage = d ? "url('"+d+"')" : "none";
+  };
+  pre.src = localSrc;
+  vcImg.style.backgroundImage = "url('"+localSrc+"')";
+  // ปรับตำแหน่งรูปเฉพาะบางตัวที่ตัวผีอยู่ต่ำ ไม่ให้โดนป้ายล่างบัง (ขยับรูปขึ้น)
+  var posMap = {ghost_1790571333054:"center 2%", ghost_1790584059193:"center 2%"};
+  vcImg.style.backgroundPosition = posMap[info.ghostId] || "center 15%";
+  document.getElementById("vcId").textContent = "ID " + info.empId;
+  document.getElementById("vcName").textContent = "คุณ " + info.empName;
+  document.getElementById("vcGhost").textContent = info.ghostName;
+  showModal("cardOverlay");
+  buildQr();
+  fitCard();
+  // สร้างรูปรอไว้ล่วงหน้า เพื่อให้กดแชร์ได้ทันที (มือถือบางรุ่นไม่ยอมให้แชร์ถ้ารอนาน)
+  setTimeout(prepareCard, 800);
+}
+window.addEventListener("resize", fitCard);
+
+function waitCardImg(){
+  return new Promise((resolve)=>{
+    const el = document.getElementById("vcImg");
+    const bg = el.style.backgroundImage || "";
+    const m = bg.match(/url\(['"]?([^'"\)]+)['"]?\)/);
+    if(!m){ resolve(); return; }
+    const im = new Image();
+    im.onload = ()=>resolve();
+    im.onerror = ()=>resolve();
+    im.src = m[1];
+    if(im.complete) resolve();
+  });
+}
+
+/* สร้างรูปการ์ดแบบ 1080x1350 จริง: คัดลอกการ์ดไปวางนอกจอที่ขนาดเต็ม แล้วถ่ายที่ scale 1
+   -> ตัวอักษร/กรอบ/QR คมชัดเท่ากันทุกเครื่อง ไม่ขึ้นกับขนาดหน้าจอ */
+// เพิ่มความสว่าง/คอนทราสต์/ความอิ่มสีให้รูป แล้วคืนเป็น dataURL (เลียนแบบ filter:brightness ที่ html2canvas ไม่รองรับ)
+function brightenImage(url, bright, contrast, sat){
+  return new Promise((resolve)=>{
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = ()=>{
+      try{
+        const cv = document.createElement("canvas");
+        cv.width = img.naturalWidth; cv.height = img.naturalHeight;
+        const ctx = cv.getContext("2d");
+        if(ctx.filter !== undefined){
+          ctx.filter = "brightness("+bright+") contrast("+contrast+") saturate("+sat+")";
+        }
+        ctx.drawImage(img, 0, 0);
+        resolve(cv.toDataURL("image/jpeg", 0.92));
+      }catch(e){ resolve(null); }   // ถ้า canvas ติด CORS (รูปจาก Drive) คืน null ใช้รูปเดิม
+    };
+    img.onerror = ()=>resolve(null);
+    img.src = url;
+    if(img.complete && img.naturalWidth) img.onload();
+  });
+}
+function brightenImage(url, bright, contrast, sat){
+  return new Promise((resolve)=>{
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = ()=>{
+      try{
+        const MAX = 1600;
+        const k = Math.min(1, MAX/Math.max(img.naturalWidth, img.naturalHeight));
+        const w = Math.round(img.naturalWidth*k), h = Math.round(img.naturalHeight*k);
+        const cv = document.createElement("canvas");
+        cv.width = w; cv.height = h;
+        const ctx = cv.getContext("2d");
+        ctx.drawImage(img, 0, 0, w, h);
+        const d = ctx.getImageData(0, 0, w, h);
+        const p = d.data;
+        const cl = v => v < 0 ? 0 : v > 1 ? 1 : v;
+        for(let i=0; i<p.length; i+=4){
+          let r = p[i]/255*bright, g = p[i+1]/255*bright, b = p[i+2]/255*bright;
+          r = cl((r-.5)*contrast+.5); g = cl((g-.5)*contrast+.5); b = cl((b-.5)*contrast+.5);
+          const l = .2126*r + .7152*g + .0722*b;
+          r = cl(l+(r-l)*sat); g = cl(l+(g-l)*sat); b = cl(l+(b-l)*sat);
+          p[i] = r*255; p[i+1] = g*255; p[i+2] = b*255;
+        }
+        ctx.putImageData(d, 0, 0);
+        resolve(cv.toDataURL("image/jpeg", 0.92));
+      }catch(e){ resolve(null); }
+    };
+    img.onerror = ()=>resolve(null);
+    img.src = url;
+  });
+}
+
+async function makeCardBlob(){
+  if(typeof html2canvas === "undefined") throw new Error("no html2canvas");
+  await waitCardImg();
+  if(document.fonts){
+    try{
+      await Promise.all([
+        document.fonts.load("700 40px Charmonman","โหวตผีไทย"),
+        document.fonts.load("700 40px Charm","COM7 Halloween 2026"),
+        document.fonts.load("400 24px Mitr","โหวตให้ ID คุณ"),
+        document.fonts.ready
+      ]);
+    }catch(e){}
+  }
+  const src = document.getElementById("voteCard");
+  const clone = src.cloneNode(true);
+  clone.querySelectorAll("[id]").forEach(e=>{ if(!e.closest("svg")) e.removeAttribute("id"); });
+  clone.querySelectorAll(".vc-shine").forEach(e=>e.remove());
+  clone.removeAttribute("id");
+  clone.style.cssText += ";position:fixed;left:-10000px;top:0;width:"+CARD_W+"px;min-width:0;height:"+CARD_H+"px;aspect-ratio:auto;border-radius:0;box-shadow:none;margin:0;font-size:"+(CARD_W/30)+"px;";
+  try{
+    const srcImgEl = src.querySelector(".vc-img");
+    const cloneImgEl = clone.querySelector(".vc-img");
+    const bg = (srcImgEl && srcImgEl.style.backgroundImage) || "";
+    const mm = bg.match(/url\(['"]?([^'"\)]+)['"]?\)/);
+    if(mm && cloneImgEl){
+      cloneImgEl.style.filter = "none";   // ใช้สีที่อบไว้ในไฟล์ตรงๆ ไม่อบซ้ำ
+    }
+  }catch(e){}
+  document.body.appendChild(clone);
+  try{
+    await new Promise(r=>setTimeout(r,250));
+    const canvas = await html2canvas(clone, {
+      useCORS:true, allowTaint:false, backgroundColor:"#0a0606", logging:false,
+      scale:2, width:CARD_W, height:CARD_H, windowWidth:CARD_W+200
+    });
+    return await new Promise(res=>canvas.toBlob(res, "image/png"));
+  } finally {
+    clone.remove();
+  }
+}
+function currentKey(){
+  return lastVote ? [lastVote.empId, lastVote.empName, lastVote.ghostId].join("|") : "";
+}
+async function getCardBlob(){
+  const key = currentKey();
+  if(cardBlob && cardBlobKey === key) return cardBlob;
+  cardBlob = await makeCardBlob();
+  cardBlobKey = key;
+  return cardBlob;
+}
+async function prepareCard(){
+  try{ await getCardBlob(); }catch(e){ cardBlob = null; }
+}
+function cardFileName(){
+  return "COM7Halloween2026_" + ((lastVote && lastVote.empId) ? lastVote.empId : "card") + ".png";
+}
+async function downloadCard(){
+  const btn = document.getElementById("dlCardBtn");
+  const old = btn.textContent;
+  btn.disabled = true; btn.textContent = "กำลังสร้างรูป…";
+  try{
+    const blob = await getCardBlob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = cardFileName();
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 4000);
+  }catch(e){ toast("บันทึกรูปไม่สำเร็จ ลองใหม่อีกครั้ง"); }
+  btn.disabled = false; btn.textContent = old;
+}
+async function shareCard(){
+  const btn = document.getElementById("shareCardBtn");
+  const old = btn.textContent;
+  btn.disabled = true; btn.textContent = "กำลังเตรียมรูป…";
+  try{
+    const blob = await getCardBlob();
+    const file = new File([blob], cardFileName(), {type:"image/png"});
+    const data = {
+      files:[file],
+      title:"COM7 Halloween 2026",
+      text:"ฉันโหวตให้ " + (lastVote ? lastVote.ghostName : "") + " คือผีที่หลอนที่สุด! มาร่วมโหวตกัน 👻 " + SITE_URL
+    };
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      await navigator.share(data);
+    } else {
+      await downloadCard();
+      toast("อุปกรณ์นี้แชร์ตรงไม่ได้ บันทึกรูปให้แล้ว นำไปแชร์ต่อได้เลย");
+    }
+  }catch(e){
+    if(!e || e.name !== "AbortError") toast("แชร์ไม่สำเร็จ ลองกดดาวน์โหลดแทนนะคะ");
+  }
+  btn.disabled = false; btn.textContent = old;
+}
+function markPicked(id){
+  document.querySelectorAll(".card").forEach(c=>c.classList.remove("picked"));
+  document.getElementById("card-"+id)?.classList.add("picked");
+}
+
+async function loadStatus(){
+  if(PREVIEW_MODE){
+    // โหมดพรีวิว: จำลองว่าเปิดโหวต และปิดในอีก 7 วัน
+    voteStatus = {open:true, endTime:new Date(Date.now()+7*86400000).toISOString()};
+    applyStatus();
+    return;
+  }
+  try{
+    const res = await apiFetch(API_URL + "?action=status&t=" + Date.now());
+    voteStatus = await res.json();
+  }catch(e){
+    voteStatus = {open:false, endTime:null};
+  }
+  applyStatus();
+}
+function applyStatus(){
+  const tag = document.getElementById("statusTag");
+  const line = document.getElementById("statusLine");
+  const cta = document.getElementById("ctaBtn");
+  if(voteStatus.open){
+    tag.innerHTML = '<span class="dot open"></span>เปิดให้โหวต';
+    line.textContent = "ร่วมโหวตได้แล้ววันนี้"; line.className="statusline open";
+    cta.disabled = false; cta.textContent = "ไปโหวตเลย";
+  } else {
+    tag.innerHTML = '<span class="dot closed"></span>ปิดรับโหวต';
+    line.textContent = "ขณะนี้ยังไม่เปิดโหวต หรือปิดโหวตแล้ว"; line.className="statusline closed";
+    cta.disabled = true; cta.textContent = "ยังไม่เปิดโหวต";
+  }
+  clearInterval(countdownTimer);
+  if(voteStatus.open && voteStatus.endTime){
+    countdownTimer = setInterval(()=>tickCountdown(voteStatus.endTime), 1000);
+    tickCountdown(voteStatus.endTime);
+  } else {
+    document.getElementById("countdown").innerHTML = "";
+  }
+}
+function tickCountdown(endTime){
+  const diff = new Date(endTime) - new Date();
+  const el = document.getElementById("countdown");
+  if(diff <= 0){ el.innerHTML=""; loadStatus(); return; }
+  const d = Math.floor(diff/86400000), h=Math.floor(diff/3600000)%24,
+        m=Math.floor(diff/60000)%60, s=Math.floor(diff/1000)%60;
+  el.innerHTML = `<div><b>${d}</b><span>วัน</span></div><div><b>${h}</b><span>ชั่วโมง</span></div>
+    <div><b>${m}</b><span>นาที</span></div><div><b>${s}</b><span>วินาที</span></div>`;
+}
+
+function openAdmin(){ window.open("admin.html", "_blank"); }
+
+spawnEmbers();
+function spawnSmoke(){
+  const box = document.getElementById("smokeField");
+  if(!box) return;
+  const n = 9;
+  for(let i=0;i<n;i++){
+    const s = document.createElement("div");
+    s.className = "smoke";
+    s.style.left = (6 + Math.random()*88) + "%";
+    const dur = 8 + Math.random()*7;          // 8-15s ต่อรอบ
+    s.style.setProperty("--dur", dur + "s");
+    s.style.setProperty("--delay", (-Math.random()*dur) + "s");
+    const size = 16 + Math.random()*20;
+    s.style.width = s.style.height = size + "px";
+    box.appendChild(s);
+  }
+}
+spawnSmoke();
+
+/* ===== Intro splash control (วิดีโอ) ===== */
+function endIntro(){
+  const el = document.getElementById("introScreen");
+  if(!el || el.classList.contains("hide")) return;
+  el.classList.add("hide");
+  document.body.classList.remove("intro-lock");
+  const v = document.getElementById("introVideo");
+  try{ if(v){ v.pause(); } }catch(e){}
+  setTimeout(()=>{ if(el && el.parentNode) el.parentNode.removeChild(el); }, 1100);
+}
+(function(){
+  const v = document.getElementById("introVideo");
+  if(!v){ endIntro(); return; }
+  const PLAY_MS = 6500;      // ให้เล่น 6.5 วิ นับ "หลังวิดีโอเริ่มเล่นจริง"
+  const LOAD_TIMEOUT = 9000; // ถ้าโหลดไม่ทันใน 9 วิ ข้ามเข้าเว็บ
+  let started = false, endTimer = null, loadTimer = null;
+
+  function startPlayback(){
+    if(started) return; started = true;
+    if(loadTimer) clearTimeout(loadTimer);
+    endTimer = setTimeout(endIntro, PLAY_MS);
+  }
+
+  v.addEventListener("playing", startPlayback, {once:true});
+  v.addEventListener("timeupdate", ()=>{ if(v.currentTime > 0.05) startPlayback(); }, {once:true});
+  v.addEventListener("ended", endIntro);
+  v.addEventListener("error", endIntro);
+
+  loadTimer = setTimeout(()=>{ if(!started) endIntro(); }, LOAD_TIMEOUT);
+
+  function tryPlay(){ const p = v.play && v.play(); if(p && p.catch) p.catch(()=>{}); }
+  if(v.readyState >= 3){ tryPlay(); }
+  else { v.addEventListener("canplay", tryPlay, {once:true}); tryPlay(); }
+})();
+
+/* ===== Parallax: เลื่อนหน้าแล้วชั้นต่างๆ ขยับคนละความเร็ว ===== */
+(function(){
+  const fogs = document.querySelectorAll('.fog-layer');
+  let ticking = false;
+  function onScroll(){
+    if(ticking) return; ticking = true;
+    requestAnimationFrame(()=>{
+      const y = window.scrollY || 0;
+      fogs.forEach((el,idx)=>{
+        const speed = [0.12, 0.20, 0.30][idx] || 0.15;
+        el.style.marginTop = (y*speed) + "px";
+      });
+      const hero = document.querySelector('.hero h1');
+      if(hero) hero.style.transform = "translateY(" + (y*0.15) + "px)";
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+})();
+
+/* ===== เพลงประกอบหลอนๆ (ไฟล์เพลง .m4a เล่นวนลูป กดเปิด/ปิด) ===== */
+let bgm=null, soundOn=false;
+function toggleSound(){
+  const btn = document.getElementById("soundBtn");
+  if(!bgm){
+    bgm = new Audio("assets/bgm.m4a");
+    bgm.loop = true; bgm.volume = 0.55; bgm.preload = "auto";
+    // กันเพลงหยุดเอง: บางเบราว์เซอร์ loop ไม่ทำงาน -> เริ่มใหม่เองเมื่อจบ
+    bgm.addEventListener("ended", ()=>{ if(soundOn){ bgm.currentTime = 0; const q = bgm.play(); if(q && q.catch) q.catch(()=>{}); } });
+  }
+  if(soundOn){
+    bgm.pause();
+    soundOn = false;
+    btn.textContent = "🔇 เพลง";
+  } else {
+    const p = bgm.play();
+    if(p && p.catch) p.catch(()=>{});
+    soundOn = true;
+    btn.textContent = "🔊 เพลง";
+  }
+}
+
+// กลับมาที่หน้าเว็บ (สลับแอป/ล็อกจอแล้วเปิดใหม่) -> ถ้ายังเปิดเพลงอยู่ ให้เล่นต่อ
+document.addEventListener("visibilitychange", ()=>{
+  if(!document.hidden && soundOn && bgm && bgm.paused){ const q = bgm.play(); if(q && q.catch) q.catch(()=>{}); }
+});
+// แสดงผีทันที (ไม่ต้องรอ backend = เว็บขึ้นเร็ว ไม่ค้าง "กำลังโหลด")
+renderGrid();
+loadGhosts();
+loadStatus();
+setInterval(loadStatus, 10000);
+setInterval(loadGhosts, 10000);
+document.addEventListener("visibilitychange", ()=>{ if(!document.hidden){ loadGhosts(); loadStatus(); } });
+</script>
+</body>
+</html>
