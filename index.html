@@ -454,7 +454,7 @@ body.intro-lock{overflow:hidden;}
           <div class="vc-qrbox"><div id="vcQr"></div></div>
           <div class="vc-qrcap">สแกนเข้าร่วมโหวต</div>
         </div>
-        <div class="vc-person"><span id="vcId"></span> <span id="vcName"></span></div>
+        <div class="vc-person"><span id="vcName"></span></div>
         <div class="vc-orn"><i></i>❖<i></i></div>
         <div class="vc-mid">โหวตให้</div>
         <div class="vc-ghost" id="vcGhost"></div>
@@ -752,8 +752,7 @@ function showVoteCard(info){
   // ปรับตำแหน่งรูปเฉพาะบางตัวที่ตัวผีอยู่ต่ำ ไม่ให้โดนป้ายล่างบัง (ขยับรูปขึ้น)
   var posMap = {ghost_1790571333054:"center 2%", ghost_1790584059193:"center 2%"};
   vcImg.style.backgroundPosition = posMap[info.ghostId] || "center 15%";
-  document.getElementById("vcId").textContent = "ID " + info.empId;
-  document.getElementById("vcName").textContent = "คุณ " + info.empName;
+    document.getElementById("vcName").textContent = "คุณ " + info.empName;
   document.getElementById("vcGhost").textContent = info.ghostName;
   showModal("cardOverlay");
   buildQr();
@@ -858,7 +857,12 @@ async function makeCardBlob(){
     const bg = (srcImgEl && srcImgEl.style.backgroundImage) || "";
     const mm = bg.match(/url\(['"]?([^'"\)]+)['"]?\)/);
     if(mm && cloneImgEl){
-      cloneImgEl.style.filter = "none";   // ใช้สีที่อบไว้ในไฟล์ตรงๆ ไม่อบซ้ำ
+      cloneImgEl.style.filter = "none";
+      // ทำให้รูปสว่างสม่ำเสมอทุกตัว (เผื่อรูปบางตัวมืด) — ลอง local ก่อน แล้วค่อย url เดิม
+      const gh = GHOSTS.find(g=>g.id===(lastVote&&lastVote.ghostId)) || {};
+      let bright = await brightenImage(cardImgSrc(gh), 1.28, 1.05, 1.07);
+      if(!bright) bright = await brightenImage(mm[1], 1.28, 1.05, 1.07);
+      if(bright) cloneImgEl.style.backgroundImage = "url('"+bright+"')";
     }
   }catch(e){}
   document.body.appendChild(clone);
@@ -908,23 +912,37 @@ async function shareCard(){
   const old = btn.textContent;
   btn.disabled = true; btn.textContent = "กำลังเตรียมรูป…";
   try{
-    const blob = await getCardBlob();
+    const blob = await getCardBlob();   // รูปเดียวกับดาวน์โหลด (สว่างแล้ว)
     const file = new File([blob], cardFileName(), {type:"image/png"});
-    const data = {
-      files:[file],
-      title:"COM7 Halloween 2026",
-      text:"ฉันโหวตให้ " + (lastVote ? lastVote.ghostName : "") + " คือผีที่หลอนที่สุด! มาร่วมโหวตกัน 👻 " + SITE_URL
-    };
+    // ลองแชร์แบบไฟล์ (มือถือส่วนใหญ่รองรับ)
     if(navigator.canShare && navigator.canShare({files:[file]})){
-      await navigator.share(data);
+      try{
+        await navigator.share({
+          files:[file],
+          title:"COM7 Halloween 2026",
+          text:"ฉันโหวตให้ " + (lastVote ? lastVote.ghostName : "") + " คือผีที่หลอนที่สุด! มาร่วมโหวตกัน 👻 " + SITE_URL
+        });
+      }catch(e){
+        if(e && e.name === "AbortError"){ /* ผู้ใช้กดยกเลิกเอง ไม่ต้องทำอะไร */ }
+        else { triggerDownload(blob); toast("แชร์ไม่สำเร็จ บันทึกรูปให้แล้ว นำไปแชร์ต่อได้เลย"); }
+      }
     } else {
-      await downloadCard();
+      // อุปกรณ์ไม่รองรับแชร์ไฟล์ (เช่นคอม) -> บันทึกรูปแทน (รูปสว่างเหมือนกดดาวน์โหลด)
+      triggerDownload(blob);
       toast("อุปกรณ์นี้แชร์ตรงไม่ได้ บันทึกรูปให้แล้ว นำไปแชร์ต่อได้เลย");
     }
   }catch(e){
-    if(!e || e.name !== "AbortError") toast("แชร์ไม่สำเร็จ ลองกดดาวน์โหลดแทนนะคะ");
+    toast("เตรียมรูปไม่สำเร็จ ลองกดดาวน์โหลดแทนนะคะ");
   }
   btn.disabled = false; btn.textContent = old;
+}
+// บันทึกรูปจาก blob (ใช้ร่วมกันระหว่างดาวน์โหลด/แชร์ fallback -> รูปสว่างเหมือนกัน)
+function triggerDownload(blob){
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = cardFileName();
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 2000);
 }
 function markPicked(id){
   document.querySelectorAll(".card").forEach(c=>c.classList.remove("picked"));
