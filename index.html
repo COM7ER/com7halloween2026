@@ -782,7 +782,10 @@ function waitCardImg(){
 function brightenImage(url, bright, contrast, sat){
   return new Promise((resolve)=>{
     const img = new Image();
-    img.crossOrigin = "anonymous";
+    // ใช้ crossOrigin เฉพาะรูปข้ามโดเมน; รูป local (assets/, blob:, data:) ไม่ต้องใช้ กันโหลดพลาดบน GitHub Pages
+    if(/^https?:\/\//i.test(url) && url.indexOf(location.origin)!==0){
+      img.crossOrigin = "anonymous";
+    }
     img.onload = ()=>{
       try{
         const cv = document.createElement("canvas");
@@ -803,7 +806,10 @@ function brightenImage(url, bright, contrast, sat){
 function brightenImage(url, bright, contrast, sat){
   return new Promise((resolve)=>{
     const img = new Image();
-    img.crossOrigin = "anonymous";
+    // ใช้ crossOrigin เฉพาะรูปข้ามโดเมน; รูป local (assets/, blob:, data:) ไม่ต้องใช้ กันโหลดพลาดบน GitHub Pages
+    if(/^https?:\/\//i.test(url) && url.indexOf(location.origin)!==0){
+      img.crossOrigin = "anonymous";
+    }
     img.onload = ()=>{
       try{
         const MAX = 1600;
@@ -868,10 +874,15 @@ async function makeCardBlob(){
   document.body.appendChild(clone);
   try{
     await new Promise(r=>setTimeout(r,250));
-    const canvas = await html2canvas(clone, {
-      useCORS:true, allowTaint:false, backgroundColor:"#0a0606", logging:false,
-      scale:2, width:CARD_W, height:CARD_H, windowWidth:CARD_W+200
-    });
+    const opts = { useCORS:true, backgroundColor:"#0a0606", logging:false,
+                   scale:2, width:CARD_W, height:CARD_H, windowWidth:CARD_W+200 };
+    let canvas;
+    try{
+      canvas = await html2canvas(clone, Object.assign({allowTaint:false}, opts));
+    }catch(err){
+      // เผื่อ canvas ถูก taint -> ลองใหม่แบบ allowTaint
+      canvas = await html2canvas(clone, Object.assign({allowTaint:true}, opts));
+    }
     return await new Promise(res=>canvas.toBlob(res, "image/png"));
   } finally {
     clone.remove();
