@@ -299,6 +299,22 @@ body.intro-lock{overflow:hidden;}
 @keyframes vcShine{0%,55%{transform:translate3d(-180%,0,0) rotate(12deg)}100%{transform:translate3d(380%,0,0) rotate(12deg)}}
 /* เครื่องที่ตั้งลดภาพเคลื่อนไหว -> ปิดแสงวิ่ง */
 @media (prefers-reduced-motion: reduce){.votecard .vc-shine::before{animation:none; display:none}}
+
+/* ===== คลิปตำนาน (กดเล่นเท่านั้น) ===== */
+.modal .modalimg{position:relative; overflow:hidden}
+.lg-video{position:absolute; inset:0; width:100%; height:100%; object-fit:contain; background:#000; display:none}
+.lg-play{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:3; border:none; cursor:pointer;
+  display:flex; flex-direction:column; align-items:center; gap:.4em; background:transparent; color:#fff; font-family:'Mitr',sans-serif}
+.lg-play .ic{width:64px; height:64px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:26px; padding-left:5px;
+  background:rgba(125,20,20,.82); border:2px solid rgba(236,208,154,.85); box-shadow:0 6px 22px rgba(0,0,0,.6)}
+.lg-play .tx{font-size:13px; padding:3px 12px; border-radius:20px; background:rgba(0,0,0,.6); text-shadow:0 1px 3px #000}
+.lg-play:hover .ic{transform:scale(1.06)}
+.lg-loading{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:3; display:none;
+  color:#ecd09a; font-size:13px; background:rgba(0,0,0,.6); padding:6px 14px; border-radius:20px}
+.modalimg.playing .lg-play,.modalimg.playing img{display:none}
+.modalimg.playing .lg-video{display:block}
+.modalimg.loading .lg-loading{display:block}
+.modalimg.loading .lg-play{display:none}
 </style>
 </head>
 <body class="intro-lock">
@@ -621,9 +637,52 @@ function openLegend(id){
   document.getElementById("lgSub").textContent = gh.sub;
   document.getElementById("lgText").textContent = gh.legend;
   document.getElementById("legendOverlay").dataset.ghost = id;
+  setupLegendVideo(gh);
   showModal("legendOverlay");
 }
+
+/* ===== คลิปตำนาน: กดปุ่ม ▶ เท่านั้นถึงโหลด/เล่น (ประหยัดเน็ต) ===== */
+// ผีที่มีคลิปในโฟลเดอร์ assets/video (เพิ่มรหัสผีตรงนี้เมื่อมีคลิปใหม่)
+const GHOST_VIDEOS = ["krasue","childghost","takien","ghost_1790571333054","ghost_1790576763832","ghost_1790583659075","ghost_1790584059193"];
+let lgVideo = null, bgmDucked = false;
+function setupLegendVideo(gh){
+  stopLegendVideo();
+  const box = document.getElementById("lgImg");
+  box.classList.remove("playing","loading");
+  if(!gh || GHOST_VIDEOS.indexOf(gh.id) < 0) return;          // ไม่มีคลิป -> โชว์รูปปกติ
+  box.insertAdjacentHTML("beforeend",
+    '<video class="lg-video" playsinline preload="none"></video>' +
+    '<button class="lg-play" type="button" onclick="playLegendVideo()"><span class="ic">▶</span><span class="tx">ดูคลิปตำนาน</span></button>' +
+    '<div class="lg-loading">กำลังโหลดคลิป…</div>');
+  lgVideo = box.querySelector(".lg-video");
+  lgVideo.dataset.src = "assets/video/" + gh.id + ".mp4";
+  lgVideo.addEventListener("ended", ()=>{ box.classList.remove("playing"); restoreBgm(); });
+  lgVideo.addEventListener("pause", ()=>{ if(!lgVideo.ended) restoreBgm(); });
+  lgVideo.addEventListener("play",  duckBgm);
+  lgVideo.addEventListener("playing", ()=>box.classList.remove("loading"));
+  lgVideo.addEventListener("click", ()=>{ lgVideo.paused ? lgVideo.play() : lgVideo.pause(); });
+  lgVideo.addEventListener("error", ()=>{ box.classList.remove("playing","loading"); restoreBgm(); toast("เปิดคลิปไม่สำเร็จ ลองใหม่อีกครั้ง"); });
+}
+function playLegendVideo(){
+  if(!lgVideo) return;
+  const box = document.getElementById("lgImg");
+  if(!lgVideo.src) lgVideo.src = lgVideo.dataset.src;          // โหลดตอนกดเท่านั้น
+  box.classList.add("playing","loading");
+  lgVideo.muted = false; lgVideo.volume = 1;
+  const p = lgVideo.play();
+  if(p && p.catch) p.catch(()=>{ box.classList.remove("loading"); lgVideo.controls = true; });
+}
+function stopLegendVideo(){
+  if(lgVideo){ try{ lgVideo.pause(); lgVideo.removeAttribute("src"); lgVideo.load(); }catch(e){} }
+  const box = document.getElementById("lgImg");
+  if(box) box.querySelectorAll(".lg-video,.lg-play,.lg-loading").forEach(e=>e.remove());
+  lgVideo = null; restoreBgm();
+}
+// ลดเสียงเพลงประกอบระหว่างเล่นคลิป แล้วคืนเสียงเมื่อคลิปหยุด/จบ
+function duckBgm(){ if(bgm && soundOn && !bgmDucked){ bgm.volume = 0.12; bgmDucked = true; } }
+function restoreBgm(){ if(bgm && bgmDucked){ bgm.volume = 0.55; } bgmDucked = false; }
 function chooseFromLegend(){
+  stopLegendVideo();
   const id = document.getElementById("legendOverlay").dataset.ghost;
   closeModal("legendOverlay");
   openVoteForm(id);
@@ -636,7 +695,7 @@ function openVoteForm(id){
   showModal("voteOverlay");
 }
 function showModal(id){ document.getElementById(id).classList.add("show"); }
-function closeModal(id){ document.getElementById(id).classList.remove("show"); }
+function closeModal(id){ if(id==="legendOverlay") stopLegendVideo(); document.getElementById(id).classList.remove("show"); }
 function scrollToGhosts(){ document.getElementById("ghosts").scrollIntoView({behavior:"smooth"}); }
 
 function toast(msg){
